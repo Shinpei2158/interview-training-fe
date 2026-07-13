@@ -1,36 +1,99 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import "./App.css";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastProvider } from "./context/ToastContext";
+import ToastContainer from "./components/Toast/ToastContainer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import VerifyRegisterPage from "./pages/VerifyRegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
+import DashboardPage from "./pages/DashboardPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import MainLayout from "./layouts/MainLayout";
+import QuizPage from "./pages/user/QuizPage";
+import FindInterviewPage from "./pages/user/FindInterviewPage";
+import MyInterviewSchedulePage from "./pages/user/MyInterviewSchedulePage";
+import InterviewerProfilePage from "./pages/user/InterviewerProfilePage";
+import InterviewerRequestsPage from "./pages/user/InterviewerRequestsPage";
+import InterviewerSchedulePage from "./pages/user/InterviewerSchedulePage";
+import StudyQuizPage from "./pages/user/StudyQuizPage";
+import TestQuizPage from "./pages/user/TestQuizPage";
+import SavedQuestionsPage from "./pages/user/SavedQuestionsPage";
+import QuizProgressPage from "./pages/user/QuizProgressPage";
+import LikedQuizzesPage from "./pages/user/LikedQuizzesPage";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-    </>
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<GuestRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/verify" element={<VerifyRegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route
+              path="/forgot-password/verify"
+              element={<VerifyForgotPasswordPage />}
+            />
+          </Route>
+
+          <Route path="/" element={<HomePage />} />
+
+          <Route element={<MainLayout />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  allowedRoles={["USER", "INTERVIEWER", "ADMIN"]}
+                />
+              }
+            >
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
+              <Route path="/quiz" element={<QuizPage />} />
+              <Route
+                path="/quizzes/:quizId/study"
+                element={<StudyQuizPage />}
+              />
+              <Route path="/quizzes/:quizId/test" element={<TestQuizPage />} />
+              <Route path="/quiz/saved" element={<SavedQuestionsPage />} />
+              <Route path="/quiz/liked" element={<LikedQuizzesPage />} />
+              <Route path="/my-progress" element={<QuizProgressPage />} />
+              <Route path="/interview" element={<FindInterviewPage />} />
+              <Route
+                path="/interview/schedule"
+                element={<MyInterviewSchedulePage />}
+              />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["INTERVIEWER"]} />}>
+              <Route
+                path="/interviewer/profile"
+                element={<InterviewerProfilePage />}
+              />
+              <Route
+                path="/interviewer/requests"
+                element={<InterviewerRequestsPage />}
+              />
+              <Route
+                path="/interviewer/schedule"
+                element={<InterviewerSchedulePage />}
+              />
+            </Route>
+          </Route>
+
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <ToastContainer />
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
-
-export default App;
