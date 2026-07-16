@@ -11,7 +11,6 @@ import { useToast } from "@/context/ToastContext";
 import { cx } from "../../utils/filter";
 import QuestionCard from "@/components/QuestionCard";
 import QuizSidebar from "@/components/QuizSidebar";
-import QuizActions from "@/components/quiz/QuizActions";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function StudyQuizPage() {
@@ -197,7 +196,6 @@ export default function StudyQuizPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <QuizActions quiz={{ id: quizId }} />
             <button
               type="button"
               onClick={() => setIsTestFormOpen(true)}

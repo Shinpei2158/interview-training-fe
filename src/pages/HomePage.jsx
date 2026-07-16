@@ -23,7 +23,7 @@ export default function HomePage() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1">
                 <div className="relative rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-100 border-8 border-white">
-                 <img
+                  <img
                     src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop"
                     alt="Collaborative Interview"
                     className="w-full aspect-square object-cover"
