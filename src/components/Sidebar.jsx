@@ -10,12 +10,12 @@ import {
   FileQuestion,
   LayoutDashboard,
   GraduationCap,
-  History,
   BarChart3,
   Bookmark,
   MessageSquareText,
   Settings,
   UserRoundCog,
+  Heart,
 } from "lucide-react";
 
 const SIDEBAR_MENU = [
@@ -31,8 +31,8 @@ const SIDEBAR_MENU = [
     roles: ["USER"],
     children: [
       { title: "Browse", icon: FileQuestion, path: "/quiz" },
-      { title: "Progress", icon: BarChart3, path: "/quiz/progress" },
-      { title: "History", icon: History, path: "/quiz/history" },
+      { title: "Liked Quizzes", icon: Heart, path: "/quiz/liked" },
+      { title: "Progress", icon: BarChart3, path: "/my-progress" },
       { title: "Saved Questions", icon: Bookmark, path: "/quiz/saved" },
     ],
   },
@@ -51,7 +51,11 @@ const SIDEBAR_MENU = [
     roles: ["INTERVIEWER"],
     children: [
       { title: "My Profile", icon: Settings, path: "/interviewer/profile" },
-      { title: "List Requests", icon: ClipboardList, path: "/interviewer/requests" },
+      {
+        title: "List Requests",
+        icon: ClipboardList,
+        path: "/interviewer/requests",
+      },
       { title: "Schedule", icon: CalendarDays, path: "/interviewer/schedule" },
     ],
   },

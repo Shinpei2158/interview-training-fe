@@ -1,9 +1,19 @@
+// API utilities for notification operations
 import apiClient from "@/config/apiClient";
 
-export function fetchNotifications() {
-  return apiClient.get("/api/notifications/me");
-}
+/**
+ * Fetch the current user's notification feed.
+ * The backend returns { unreadCount, notifications }.
+ */
+export const fetchNotifications = async () => {
+  const { data } = await apiClient.get("/api/notifications/me");
+  return data;
+};
 
-export function markNotificationRead(notificationId) {
-  return apiClient.patch(`/api/notifications/${notificationId}/read`);
-}
+/**
+ * Mark a specific notification as read.
+ * @param {string|number} id - Notification UUID
+ */
+export const markNotificationRead = async (id) => {
+  await apiClient.patch(`/api/notifications/${id}/read`);
+};
