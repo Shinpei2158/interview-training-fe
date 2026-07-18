@@ -1,7 +1,11 @@
-import { useMemo, useRef, useState } from "react";
-import { CheckCircle2, Award, AlertTriangle, X } from "lucide-react";
+import { useMemo, useRef, useState, useEffect } from "react";
+import { CheckCircle2, Award, AlertTriangle, X, RotateCcw } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { fetchQuizAnswers, saveQuizTestProgress } from "@/api/quiz";
+import {
+  fetchQuizAnswers,
+  saveQuizTestProgress,
+  retakeProgress,
+} from "@/api/quiz";
 import { useToast } from "@/context/ToastContext";
 import QuizSidebar from "@/components/QuizSidebar";
 import MarkdownContent from "@/components/MarkdownContent";
@@ -17,20 +21,32 @@ export default function TestQuizPage() {
   const { state } = useLocation();
   const { toast } = useToast();
   const questionRefs = useRef({});
-  const test = state?.test || state?.resume;
-  const startedAtRef = useRef(Date.now() - (state?.resume?.elapsedSeconds || 0) * 1000);
 
-  const [selectedAnswers, setSelectedAnswers] = useState(state?.resume?.answers || {});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(state?.resume?.currentQuestionIndex || 0);
+  // Đối tượng test chứa thông tin bài thi hiện tại
+  const [testData, setTestData] = useState(state?.test || state?.resume);
+
+  const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now() - (testData?.elapsedSeconds || 0) * 1000;
+  }, [testData?.elapsedSeconds]);
+
+  const [selectedAnswers, setSelectedAnswers] = useState(
+    testData?.answers || {},
+  );
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    testData?.currentQuestionIndex || 0,
+  );
   const [answerKey, setAnswerKey] = useState(null);
-  const [score, setScore] = useState(null);
+  const [score, setScore] = useState(testData?.score ?? null);
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
 
+  // Chuyển đổi danh sách câu hỏi thành định dạng hiển thị kèm Option A, B, C, D
   const questions = useMemo(
     () =>
-      (test?.questions ?? []).map((question, index) => ({
+      (testData?.questions ?? []).map((question, index) => ({
         ...question,
         displayNumber: index + 1,
         options: OPTION_KEYS.map((key) => ({
@@ -39,10 +55,32 @@ export default function TestQuizPage() {
           content: question?.[`option${key}`] ?? "",
         })),
       })),
-    [test],
+    [testData],
   );
 
   const questionIds = useMemo(() => questions.map((q) => q.id), [questions]);
+
+  // Tự động tải đáp án NẾU bài thi này đã hoàn thành từ trước (Chế độ xem lại kết quả)
+  useEffect(() => {
+    const hasFinishedBefore = testData?.status === "FINISHED";
+
+    if (hasFinishedBefore && quizId && questionIds.length > 0) {
+      const loadAnswersForFinishedQuiz = async () => {
+        try {
+          const answers = await fetchQuizAnswers(quizId, questionIds);
+          const answersByQuestionId = new Map(
+            answers.map((answer) => [answer.questionId, answer.correctAnswer]),
+          );
+          setAnswerKey(answersByQuestionId);
+        } catch (error) {
+          console.error("Lỗi tải đáp án:", error);
+          toast.error("Không thể tải đáp án của bài thi cũ.");
+        }
+      };
+      loadAnswersForFinishedQuiz();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizId, questionIds.length, testData?.status]);
 
   const scrollToQuestion = (questionId) => {
     const index = questions.findIndex((question) => question.id === questionId);
@@ -55,14 +93,32 @@ export default function TestQuizPage() {
     });
   };
 
-  const saveProgress = async (status, finalScore = null) => {
+  const saveProgress = async (
+    status,
+    finalScore = null,
+    answersData = selectedAnswers,
+  ) => {
+    const currentProgressId = testData?.progressId;
+
+    if (!currentProgressId) {
+      console.warn(
+        "Không tìm thấy progressId hoặc id hợp lệ trong testData:",
+        testData,
+      );
+      return;
+    }
+
     return saveQuizTestProgress(quizId, {
+      progressId: currentProgressId,
       status,
-      questionIds,
-      answers: selectedAnswers,
+      answers: answersData,
       score: finalScore,
       currentQuestionIndex,
-      elapsedSeconds: Math.max(0, Math.floor((Date.now() - startedAtRef.current) / 1000)),
+      elapsedSeconds: Math.max(
+        0,
+        Math.floor((Date.now() - startedAtRef.current) / 1000),
+      ),
+      questionIds: questionIds,
     });
   };
 
@@ -106,6 +162,9 @@ export default function TestQuizPage() {
       setAnswerKey(answersByQuestionId);
       setScore(totalCorrect);
       await saveProgress("FINISHED", totalCorrect);
+
+      // Cập nhật lại trạng thái testData thành FINISHED để đồng bộ UI
+      setTestData((prev) => ({ ...prev, status: "FINISHED" }));
       setShowScoreModal(true);
       toast.success("Nộp bài thi thành công!");
     } catch (error) {
@@ -115,7 +174,52 @@ export default function TestQuizPage() {
     }
   };
 
-  if (!test) {
+  // Làm lại bài thi (Retake)
+  const handleRetake = async () => {
+    const confirmRetake = window.confirm(
+      "Bạn có chắc chắn muốn làm lại bài thi này? Toàn bộ kết quả cũ sẽ bị xóa.",
+    );
+    if (!confirmRetake) return;
+
+    setIsSaving(true);
+    try {
+      const progressId = testData?.progressId;
+
+      if (progressId) {
+        // GỌI API RETAKE CHUYÊN BIỆT TRÊN SERVER
+        await retakeProgress(progressId);
+      } else {
+        // Dự phòng nếu đi từ study qua chưa có progressId (tạo nháp IN_PROGRESS)
+        await saveProgress("IN_PROGRESS", null, {});
+      }
+
+      // RESET TOÀN BỘ TRẠNG THÁI CLIENT
+      setAnswerKey(null); // GIẤU HOÀN TOÀN ĐÁP ÁN (Không gọi lại API tải đáp án)
+      setSelectedAnswers({});
+      setScore(null);
+      setCurrentQuestionIndex(0);
+      setShowScoreModal(false);
+      startedAtRef.current = Date.now(); // Khởi động lại bộ đếm giờ
+
+      // Cập nhật lại status của bài thi hiện tại về IN_PROGRESS
+      setTestData((prev) => ({
+        ...prev,
+        status: "IN_PROGRESS",
+        answers: {},
+        score: null,
+        currentQuestionIndex: 0,
+        elapsedSeconds: 0,
+      }));
+
+      toast.success("Khởi tạo lại bài thi thành công! Bắt đầu làm bài.");
+    } catch (error) {
+      toast.error(error?.message || "Không thể khởi tạo lại bài thi.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (!testData) {
     return (
       <div className="mx-auto max-w-xl px-6 py-16 text-center">
         <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-500">
@@ -139,7 +243,7 @@ export default function TestQuizPage() {
 
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[340px_minmax(0,1fr)] bg-gray-50/30">
-      {/* TẬN DỤNG COMPONENT SIDEBAR CHUNG TẠI ĐÂY */}
+      {/* SIDEBAR ĐIỀU HƯỚNG */}
       <QuizSidebar
         mode="test"
         questions={questions}
@@ -152,23 +256,38 @@ export default function TestQuizPage() {
         isSubmitting={isSubmitting}
       />
 
-      {/* Danh sách hiển thị câu hỏi bên phải */}
+      {/* NỘI DUNG HIỂN THỊ CHI TIẾT CÂU HỎI */}
       <main className="space-y-6">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-xl font-bold text-gray-900 font-sans">
               Nội dung bài thi
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
-              Lựa chọn đáp án cẩn thận, không thể sửa sau khi đã nộp bài
+              {answerKey
+                ? "Đang ở chế độ xem lại đáp án. Bạn có thể chọn làm lại bài thi bất cứ lúc nào."
+                : "Lựa chọn đáp án cẩn thận, không thể sửa sau khi đã nộp bài."}
             </p>
           </div>
-          {answerKey && (
-            <div className="rounded-xl bg-green-50 px-4 py-2 border border-green-100 text-sm font-bold text-green-700 flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4" /> Kết quả: {score}/
-              {questions.length} Câu đúng
-            </div>
-          )}
+
+          <div className="flex items-center gap-2">
+            {answerKey && (
+              <>
+                <div className="rounded-xl bg-green-50 px-4 py-2 border border-green-100 text-sm font-bold text-green-700 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4" /> Kết quả: {score}/
+                  {questions.length} Câu đúng
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleRetake}
+                  className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-bold text-blue-600 hover:bg-blue-100 transition flex items-center gap-1.5"
+                >
+                  <RotateCcw className="h-4 w-4" /> Làm lại bài
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         {questions.map((question, index) => {
@@ -283,7 +402,7 @@ export default function TestQuizPage() {
         })}
       </main>
 
-      {/* Popup Modal điểm số */}
+      {/* POPUP HIỂN THỊ KẾT QUẢ ĐIỂM SỐ */}
       {showScoreModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-xs px-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl border border-gray-100 animate-scale-in">
@@ -314,13 +433,22 @@ export default function TestQuizPage() {
                 {Math.round((score / (questions.length || 1)) * 100)}%
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowScoreModal(false)}
-              className="w-full rounded-xl bg-blue-600 py-3 text-sm font-bold text-white shadow-md shadow-blue-200 hover:bg-blue-700 transition"
-            >
-              Xem chi tiết đáp án
-            </button>
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setShowScoreModal(false)}
+                className="w-full rounded-xl bg-blue-600 py-3 text-sm font-bold text-white shadow-md shadow-blue-200 hover:bg-blue-700 transition"
+              >
+                Xem chi tiết đáp án
+              </button>
+              <button
+                type="button"
+                onClick={handleRetake}
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition flex items-center justify-center gap-1.5"
+              >
+                <RotateCcw className="h-4 w-4" /> Làm lại bài thi mới
+              </button>
+            </div>
           </div>
         </div>
       )}

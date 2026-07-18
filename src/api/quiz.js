@@ -51,6 +51,10 @@ export function fetchQuizProgressDetail(progressId) {
   return apiClient.get(`/api/quizzes/progress/${progressId}`);
 }
 
+export function retakeProgress(progressId) {
+  return apiClient.post(`/api/quizzes/progress/${progressId}/retake`);
+}
+
 export function fetchLikedQuizzes() {
   return apiClient.get("/api/quizzes/liked/me");
 }
