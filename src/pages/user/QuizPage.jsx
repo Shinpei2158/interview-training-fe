@@ -57,10 +57,9 @@ export default function QuizPage() {
       />
 
       <div className="mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Interview Quizzes</h2>
+        <div className="flex mb-4">
           {!isLoading && (
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-600">
               {data?.totalElements || 0} quizzes
             </span>
           )}
