@@ -82,3 +82,41 @@ export function createQuiz(payload) {
 export function reportContent(payload) {
   return apiClient.post("/api/reports", payload);
 }
+
+export function fetchMyPrivateQuizzes() {
+  return apiClient.get("/api/quizzes/my-private");
+}
+
+export function fetchMyQuizzes() {
+  return apiClient.get("/api/quizzes/my");
+}
+
+export function deleteQuiz(quizId) {
+  return apiClient.delete(`/api/quizzes/${quizId}`);
+}
+
+export function saveDraftQuiz(quizId, payload) {
+  return apiClient.post(`/api/quizzes/${quizId}/draft`, payload);
+}
+
+export function submitQuiz(quizId) {
+  return apiClient.post(`/api/quizzes/${quizId}/submit`);
+}
+
+export function saveQuestions(quizId, questions) {
+  return apiClient.post(`/api/questions/quiz/${quizId}`, questions);
+}
+
+export function uploadQuestionImage(questionId, file) {
+  const formData = new FormData();
+  formData.append("image", file);
+  return apiClient.post(`/api/questions/${questionId}/image`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export function fetchQuizDetail(quizId) {
+  return apiClient.get(`/api/quizzes/${quizId}`);
+}

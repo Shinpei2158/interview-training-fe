@@ -1,5 +1,13 @@
 import { useMemo, useState } from "react";
-import { X } from "lucide-react";
+import {
+  X,
+  Star,
+  Calendar,
+  ShieldCheck,
+  FileText,
+  Image as ImageIcon,
+  ExternalLink,
+} from "lucide-react";
 
 import {
   useCreateInterviewRequest,
@@ -31,14 +39,21 @@ export default function RequestModal({ profile, onClose }) {
   const [message, setMessage] = useState("");
   const { start, end } = useMemo(weekWindow, []);
 
-  const profileBookingsWindow = useMemo(() => ({
-    startsAt: toApiDateTime(start),
-    endsAt: toApiDateTime(end),
-  }), [start, end]);
-  const { data: bookings = [] } = useProfileBookings(profile.id, profileBookingsWindow);
+  const profileBookingsWindow = useMemo(
+    () => ({
+      startsAt: toApiDateTime(start),
+      endsAt: toApiDateTime(end),
+    }),
+    [start, end],
+  );
+  const { data: bookings = [] } = useProfileBookings(
+    profile.id,
+    profileBookingsWindow,
+  );
 
   const selectedSlots = [...selectedKeys].sort(
-    (left, right) => slotDateFromKey(left, start) - slotDateFromKey(right, start),
+    (left, right) =>
+      slotDateFromKey(left, start) - slotDateFromKey(right, start),
   );
   const scheduledAt = selectedSlots.length
     ? slotDateFromKey(selectedSlots[0], start)
@@ -73,30 +88,182 @@ export default function RequestModal({ profile, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
-      <div className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-lg bg-white p-5 shadow-xl">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-semibold">{profile.title}</h3>
-            <p className="text-sm text-slate-500">{profile.interviewerName}</p>
-            <p className="mt-2 text-sm font-medium text-slate-700">
-              Week {getWeekOfMonth(weekLabelDate)} of{" "}
-              {new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(weekLabelDate)}
-              <span className="font-normal text-slate-500">
-                {" "}({formatShortDate(start)} - {formatShortDate(addDays(end, -1))})
-              </span>
-            </p>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 py-8">
+      <div className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-3xl bg-white p-6 shadow-2xl border border-slate-100 flex flex-col gap-5">
+        {/* Header - Profile details */}
+        <div className="relative border-b border-slate-100 pb-5">
           <button
-            className="rounded-lg p-2 hover:bg-slate-100"
+            type="button"
+            className="absolute top-0 right-0 text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 p-2.5 rounded-xl transition"
             onClick={onClose}
             aria-label="Close"
           >
             <X size={18} />
           </button>
+
+          <div className="flex flex-col md:flex-row items-start gap-5 pr-10">
+            {/* Avatar & Experience badge */}
+            <div className="flex-shrink-0 relative">
+              <img
+                src={profile.avatarUrl || "/default-avatar.png"}
+                alt={profile.interviewerName}
+                className="h-16 w-16 rounded-2xl object-cover ring-4 ring-indigo-50/50"
+              />
+              {profile.yearsExperience != null && (
+                <span className="absolute -bottom-1 -right-1 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-white">
+                  {profile.yearsExperience}y exp
+                </span>
+              )}
+            </div>
+
+            {/* Profile Information */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <h3 className="text-lg font-bold text-slate-900 leading-tight">
+                  {profile.interviewerName}
+                </h3>
+                {profile.company && (
+                  <span className="text-xs font-semibold px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-lg">
+                    {profile.company}
+                  </span>
+                )}
+              </div>
+              <p className="text-sm font-semibold text-slate-700 mt-1">
+                {profile.title}
+              </p>
+
+              {profile.description && (
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed max-w-3xl">
+                  {profile.description}
+                </p>
+              )}
+
+              {/* Rating & Subcategories summary */}
+              <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-500">
+                {profile.averageRating != null && (
+                  <span className="flex items-center gap-1 font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
+                    <Star size={12} className="fill-amber-500 text-amber-500" />
+                    {profile.averageRating.toFixed(1)} (
+                    {profile.totalRatings || 0} reviews)
+                  </span>
+                )}
+                <div className="flex flex-wrap gap-1.5">
+                  {profile.subcategories?.map((sc) => (
+                    <span
+                      key={sc.id}
+                      className="bg-slate-50 border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px] font-medium"
+                    >
+                      {sc.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Verification Credentials */}
+              {(profile.verificationImageUrl ||
+                profile.verificationDocuments?.length > 0) && (
+                <div className="mt-4 pt-3 border-t border-slate-100">
+                  <h5 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
+                    <ShieldCheck size={13} className="text-emerald-600" />
+                    Verified Credentials
+                  </h5>
+                  <div className="flex flex-wrap items-start gap-3">
+                    {/* Verification Image */}
+                    {profile.verificationImageUrl && (
+                      <a
+                        href={profile.verificationImageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative block w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-100 hover:border-emerald-300 transition-all shadow-sm hover:shadow-md"
+                      >
+                        <img
+                          src={profile.verificationImageUrl}
+                          alt="Verification"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/40 flex items-center justify-center transition-all">
+                          <ExternalLink
+                            size={16}
+                            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                      </a>
+                    )}
+
+                    {/* Verification Documents */}
+                    {profile.verificationDocuments?.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {profile.verificationDocuments.map((docUrl, idx) => {
+                          const isImage =
+                            /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(docUrl);
+                          const fileName =
+                            docUrl.split("/").pop()?.split("?")[0] ||
+                            `Document ${idx + 1}`;
+                          const shortName =
+                            fileName.length > 20
+                              ? fileName.slice(0, 17) + "..."
+                              : fileName;
+
+                          return (
+                            <a
+                              key={idx}
+                              href={docUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-2 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl px-3 py-2 text-xs text-slate-700 hover:text-indigo-700 transition-all shadow-sm hover:shadow-md max-w-[200px]"
+                              title={fileName}
+                            >
+                              {isImage ? (
+                                <ImageIcon
+                                  size={14}
+                                  className="text-emerald-500 flex-shrink-0"
+                                />
+                              ) : (
+                                <FileText
+                                  size={14}
+                                  className="text-indigo-500 flex-shrink-0"
+                                />
+                              )}
+                              <span className="truncate font-medium">
+                                {shortName}
+                              </span>
+                              <ExternalLink
+                                size={10}
+                                className="text-slate-300 group-hover:text-indigo-400 flex-shrink-0 transition"
+                              />
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Date / Week summary bar */}
+        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h4 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <Calendar size={16} className="text-indigo-600" />
+              <span>Choose Booking Slots</span>
+            </h4>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Select one or more consecutive 1-hour slots to book your session.
+            </p>
+          </div>
+          <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 text-xs font-semibold text-slate-700 shadow-sm flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+            Week {getWeekOfMonth(weekLabelDate)} ({formatShortDate(start)} -{" "}
+            {formatShortDate(addDays(end, -1))})
+          </div>
+        </div>
+
+        {/* Booking Form + Grid */}
         <form
-          className="mt-5 grid gap-5 lg:grid-cols-[1fr_320px]"
+          className="grid gap-6 lg:grid-cols-[1fr_320px]"
           onSubmit={(event) => {
             event.preventDefault();
             mutation.mutate({
@@ -110,22 +277,26 @@ export default function RequestModal({ profile, onClose }) {
             });
           }}
         >
-          <BookingCalendarGrid
-            availability={profile.availabilities}
-            bookings={bookings}
-            selectedKeys={selectedKeys}
-            onToggle={toggleSlot}
-            weekStart={start}
-          />
-          <RequestFormPanel
-            profile={profile}
-            selectedSkillIds={selectedSkillIds}
-            setSelectedSkillIds={setSelectedSkillIds}
-            durationMinutes={durationMinutes}
-            message={message}
-            setMessage={setMessage}
-            isSubmitting={mutation.isPending}
-          />
+          <div className="min-w-0">
+            <BookingCalendarGrid
+              availability={profile.availabilities}
+              bookings={bookings}
+              selectedKeys={selectedKeys}
+              onToggle={toggleSlot}
+              weekStart={start}
+            />
+          </div>
+          <div className="flex-shrink-0">
+            <RequestFormPanel
+              profile={profile}
+              selectedSkillIds={selectedSkillIds}
+              setSelectedSkillIds={setSelectedSkillIds}
+              durationMinutes={durationMinutes}
+              message={message}
+              setMessage={setMessage}
+              isSubmitting={mutation.isPending}
+            />
+          </div>
         </form>
       </div>
     </div>

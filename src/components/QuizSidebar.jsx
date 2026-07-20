@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Loader2, Save } from "lucide-react";
 import { cx } from "@/utils/filter";
+import MarkdownContent from "./MarkdownContent";
 
 const OPTION_KEYS = ["A", "B", "C", "D"];
 
@@ -102,9 +103,9 @@ export default function QuizSidebar({
                   >
                     {displayIndex}
                   </span>
-                  <span className="min-w-0 flex-1 truncate text-xs font-medium text-gray-700">
+                  <MarkdownContent className="min-w-0 flex-1 truncate text-xs font-medium text-gray-700">
                     {question.content}
-                  </span>
+                  </MarkdownContent>
 
                   {/* Hiện badge đáp án gọn ở cuối dòng nếu ở chế độ Test chưa nộp bài */}
                   {isTestMode && isInteracted && !answerKey && (

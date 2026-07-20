@@ -25,3 +25,31 @@ export function updateUserRole(userId, role) {
 export function updateUserActive(userId, isActive) {
   return apiClient.patch(`/api/users/${userId}/active`, { active: isActive });
 }
+
+/**
+ * Fetch currently logged in user's profile.
+ */
+export function fetchUserProfile() {
+  return apiClient.get("/api/users/profile");
+}
+
+/**
+ * Update currently logged in user's profile.
+ */
+export function updateUserProfile(payload) {
+  return apiClient.put("/api/users/profile", payload);
+}
+
+/**
+ * Upload currently logged in user's avatar.
+ */
+export function uploadUserAvatar(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  return apiClient.post("/api/users/profile/avatar", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+

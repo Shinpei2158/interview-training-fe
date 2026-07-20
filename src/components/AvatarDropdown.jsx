@@ -1,5 +1,6 @@
 import { useLogout } from "@/hooks/auth/useLogout";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 function AvatarDropdown({ user }) {
   const [open, setOpen] = useState(false);
@@ -46,12 +47,13 @@ function AvatarDropdown({ user }) {
           </div>
 
           <div className="py-2">
-            <a
-              href="/profile"
+            <Link
+              to="/profile"
+              onClick={() => setOpen(false)}
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
             >
               Profile
-            </a>
+            </Link>
 
             <a
               href="#"

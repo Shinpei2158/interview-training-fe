@@ -1,4 +1,5 @@
 import { DAYS, HOURS, defaultAvailability, rangesToKeys, slotKey, slotsToRanges } from "@/components/interview/common/interviewUtils";
+import { Trash2, CalendarRange, Moon } from "lucide-react";
 
 export default function AvailabilityGrid({ value, onChange }) {
   const activeKeys = rangesToKeys(value?.length ? value : defaultAvailability());
@@ -11,30 +12,149 @@ export default function AvailabilityGrid({ value, onChange }) {
     onChange(slotsToRanges(next));
   };
 
+  // Toggle all hours for a specific day column
+  const toggleDayColumn = (dayOfWeek) => {
+    const next = new Set(activeKeys);
+    const dayKeys = HOURS.map((h) => slotKey(dayOfWeek, h));
+    const allActive = dayKeys.every((k) => next.has(k));
+    
+    if (allActive) {
+      dayKeys.forEach((k) => next.delete(k));
+    } else {
+      dayKeys.forEach((k) => next.add(k));
+    }
+    onChange(slotsToRanges(next));
+  };
+
+  // Toggle all days for a specific hour row
+  const toggleHourRow = (hour) => {
+    const next = new Set(activeKeys);
+    const hourKeys = DAYS.map((d) => slotKey(d.value, hour));
+    const allActive = hourKeys.every((k) => next.has(k));
+
+    if (allActive) {
+      hourKeys.forEach((k) => next.delete(k));
+    } else {
+      hourKeys.forEach((k) => next.add(k));
+    }
+    onChange(slotsToRanges(next));
+  };
+
+  // Preset selectors
+  const applyPreset = (type) => {
+    const next = new Set();
+    if (type === "WEEKDAYS_9_5") {
+      // Mon to Fri (1-5), hours 9 to 16 inclusive (9 AM to 5 PM)
+      DAYS.filter((d) => d.value >= 1 && d.value <= 5).forEach((d) => {
+        for (let h = 9; h < 17; h++) {
+          next.add(slotKey(d.value, h));
+        }
+      });
+    } else if (type === "EVENINGS") {
+      // All days, 6 PM to 9 PM (18:00 - 21:00)
+      DAYS.forEach((d) => {
+        for (let h = 18; h < 21; h++) {
+          next.add(slotKey(d.value, h));
+        }
+      });
+    }
+    onChange(slotsToRanges(next));
+  };
+
   return (
-    <div>
-      <h4 className="mb-2 text-sm font-semibold text-slate-800">Availability</h4>
-      <div className="overflow-x-auto rounded-lg border">
-        <div className="grid min-w-[720px] grid-cols-[72px_repeat(7,minmax(84px,1fr))] text-sm">
-          <div className="border-b bg-slate-50 p-2" />
-          {DAYS.map((day) => <div key={day.value} className="border-b border-l bg-slate-50 p-2 text-center font-medium">{day.label}</div>)}
-          {HOURS.map((hour) => (
-            <>
-              <div key={`time-${hour}`} className="border-b bg-slate-50 p-2 text-xs text-slate-500">{String(hour).padStart(2, "0")}:00</div>
-              {DAYS.map((day) => {
-                const active = activeKeys.has(slotKey(day.value, hour));
-                return (
-                  <button
-                    key={slotKey(day.value, hour)}
-                    type="button"
-                    onClick={() => toggle(day.value, hour)}
-                    className={`h-9 border-b border-l ${active ? "bg-blue-500 hover:bg-blue-600" : "bg-white hover:bg-slate-100"}`}
-                    aria-label={`${day.label} ${hour}:00`}
-                  />
-                );
-              })}
-            </>
-          ))}
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h4 className="text-sm font-semibold text-slate-800">Weekly Availability Calendar</h4>
+          <p className="text-xs text-slate-400">Click headers to toggle full rows/columns. Click individual blocks to toggle hours.</p>
+        </div>
+        
+        {/* Preset controls */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => applyPreset("WEEKDAYS_9_5")}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50 hover:bg-indigo-100 text-xs font-semibold text-indigo-700 transition"
+          >
+            <CalendarRange size={13} />
+            Weekdays (9am-5pm)
+          </button>
+          <button
+            type="button"
+            onClick={() => applyPreset("EVENINGS")}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50 hover:bg-purple-100 text-xs font-semibold text-purple-700 transition"
+          >
+            <Moon size={13} />
+            Evenings (6pm-9pm)
+          </button>
+          <button
+            type="button"
+            onClick={() => onChange([])}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-100 bg-red-50 hover:bg-red-100 text-xs font-semibold text-red-700 transition"
+          >
+            <Trash2 size={13} />
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-slate-100 shadow-sm">
+        <div className="grid min-w-[720px] grid-cols-[76px_repeat(7,minmax(84px,1fr))] text-sm">
+          {/* Header Row */}
+          <div className="border-b bg-slate-50 p-2.5 font-semibold text-slate-400 text-xs flex items-center justify-center">TIME</div>
+          {DAYS.map((day) => {
+            const dayKeys = HOURS.map((h) => slotKey(day.value, h));
+            const allActive = dayKeys.every((k) => activeKeys.has(k));
+            return (
+              <button
+                key={day.value}
+                type="button"
+                onClick={() => toggleDayColumn(day.value)}
+                className={`border-b border-l bg-slate-50 p-2.5 text-center font-bold text-xs uppercase tracking-wider transition ${
+                  allActive ? "text-indigo-600 bg-indigo-50/50" : "text-slate-600 hover:bg-slate-100"
+                }`}
+                title={`Toggle entire ${day.label}`}
+              >
+                {day.label}
+              </button>
+            );
+          })}
+
+          {/* Time Rows */}
+          {HOURS.map((hour) => {
+            const hourKeys = DAYS.map((d) => slotKey(d.value, hour));
+            const allActive = hourKeys.every((k) => activeKeys.has(k));
+            return (
+              <div key={`row-${hour}`} className="contents">
+                <button
+                  type="button"
+                  onClick={() => toggleHourRow(hour)}
+                  className={`border-b bg-slate-50 p-2.5 text-left font-semibold text-[11px] transition ${
+                    allActive ? "text-indigo-600 bg-indigo-50/50" : "text-slate-400 hover:bg-slate-100"
+                  }`}
+                  title={`Toggle all days at ${String(hour).padStart(2, "0")}:00`}
+                >
+                  {String(hour).padStart(2, "0")}:00
+                </button>
+                {DAYS.map((day) => {
+                  const active = activeKeys.has(slotKey(day.value, hour));
+                  return (
+                    <button
+                      key={slotKey(day.value, hour)}
+                      type="button"
+                      onClick={() => toggle(day.value, hour)}
+                      className={`h-9 border-b border-l transition duration-150 ${
+                        active 
+                          ? "bg-indigo-600 hover:bg-indigo-700 shadow-inner" 
+                          : "bg-white hover:bg-slate-50"
+                      }`}
+                      aria-label={`${day.label} ${hour}:00`}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
