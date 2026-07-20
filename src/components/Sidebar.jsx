@@ -59,6 +59,12 @@ const SIDEBAR_MENU = [
       { title: "Schedule", icon: CalendarDays, path: "/interviewer/schedule" },
     ],
   },
+  {
+    title: "Quiz",
+    icon: GraduationCap,
+    path: "/interviewer/quiz",
+    roles: ["INTERVIEWER"],
+  },
 ];
 
 export default function Sidebar({ user, collapsed, setCollapsed }) {
@@ -76,7 +82,7 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
       ...prev,
       Quizzes: pathname.startsWith("/quiz"),
       Interview: pathname.startsWith("/interview"),
-      Interviewer: pathname.startsWith("/interviewer"),
+      Interviewer: pathname.startsWith("/interviewer") && !pathname.startsWith("/interviewer/quiz"),
     }));
   }, [pathname]);
 

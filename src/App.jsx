@@ -18,11 +18,14 @@ import MyInterviewSchedulePage from "./pages/user/MyInterviewSchedulePage";
 import InterviewerProfilePage from "./pages/user/InterviewerProfilePage";
 import InterviewerRequestsPage from "./pages/user/InterviewerRequestsPage";
 import InterviewerSchedulePage from "./pages/user/InterviewerSchedulePage";
+import InterviewerQuizListPage from "./pages/user/InterviewerQuizListPage";
+import InterviewerQuizEditorPage from "./pages/user/InterviewerQuizEditorPage";
 import StudyQuizPage from "./pages/user/StudyQuizPage";
 import TestQuizPage from "./pages/user/TestQuizPage";
 import SavedQuestionsPage from "./pages/user/SavedQuestionsPage";
 import QuizProgressPage from "./pages/user/QuizProgressPage";
 import LikedQuizzesPage from "./pages/user/LikedQuizzesPage";
+import ProfilePage from "./pages/user/ProfilePage";
 
 export default function App() {
   return (
@@ -51,6 +54,7 @@ export default function App() {
               }
             >
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
@@ -82,6 +86,14 @@ export default function App() {
               <Route
                 path="/interviewer/schedule"
                 element={<InterviewerSchedulePage />}
+              />
+              <Route
+                path="/interviewer/quiz"
+                element={<InterviewerQuizListPage />}
+              />
+              <Route
+                path="/interviewer/quiz/:quizId/edit"
+                element={<InterviewerQuizEditorPage />}
               />
             </Route>
           </Route>

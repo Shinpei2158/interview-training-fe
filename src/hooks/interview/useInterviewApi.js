@@ -11,6 +11,10 @@ import {
   rejectInterviewBooking,
   saveMyInterviewProfile,
   submitInterviewFeedback,
+  uploadInterviewerDocuments,
+  uploadVerificationImage,
+  deleteVerificationImage,
+  deleteVerificationDocument,
 } from "@/api/interviews";
 import { useToast } from "@/context/ToastContext";
 
@@ -47,6 +51,62 @@ export function useSaveMyInterviewProfile() {
       toast.success("Interview profile saved");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
       queryClient.invalidateQueries({ queryKey: ["interview-profiles"] });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+}
+
+export function useUploadInterviewerDocuments() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: uploadInterviewerDocuments,
+    onSuccess: () => {
+      toast.success("Verification documents uploaded successfully!");
+      queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+}
+
+export function useUploadVerificationImage() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: uploadVerificationImage,
+    onSuccess: () => {
+      toast.success("Verification image uploaded!");
+      queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+}
+
+export function useDeleteVerificationImage() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: deleteVerificationImage,
+    onSuccess: () => {
+      toast.success("Verification image removed.");
+      queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
+    },
+    onError: (error) => toast.error(error.message),
+  });
+}
+
+export function useDeleteVerificationDocument() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: deleteVerificationDocument,
+    onSuccess: () => {
+      toast.success("Document removed.");
+      queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
     },
     onError: (error) => toast.error(error.message),
   });
