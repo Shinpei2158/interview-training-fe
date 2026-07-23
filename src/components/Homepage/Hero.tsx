@@ -23,16 +23,16 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 border border-brand-100 text-brand-700 font-medium text-sm mb-6">
-              <Terminal className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f0f7ff] border border-[#e0f2fe] text-[#0077b6] font-medium text-sm mb-6">
+              <Terminal className="w-4 h-4 text-[#0077b6]" />
               <span>The Next-Gen Interview Platform for IT Experts</span>
             </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6">
+            <h1 className="text-5xl lg:text-7xl font-extrabold text-[#0f172a] leading-[1.1] mb-6">
               Master Your IT{" "}
-              <span className="text-brand-600 italic">Interviews</span> with
+              <span className="text-[#0077b6] italic">Interviews</span> with
               Professionals.
             </h1>
-            <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-xl">
+            <p className="text-xl text-[#64748b] mb-8 leading-relaxed max-w-xl">
               Connect with experienced IT interviewers from top tech companies.
               Practice real-world scenarios, get instant feedback, and land your
               dream job.
@@ -41,14 +41,14 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/register"
-                className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-700 transition shadow-xl shadow-brand-100 hover:scale-105 active:scale-95 duration-200"
+                className="flex items-center justify-center gap-2 bg-[#ff6b35] hover:bg-[#e85d04] text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-xl shadow-[#ff6b35]/20 hover:scale-105 active:scale-95 duration-200"
               >
-                Start Training Now
+                Bắt đầu phỏng vấn
                 <ChevronRight className="w-5 h-5" />
               </Link>
-              <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg text-slate-700 hover:bg-slate-50 transition border border-slate-200">
-                <PlayCircle className="w-5 h-5 text-brand-600" />
-                Watch Demo
+              <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg text-[#0f172a] hover:bg-[#f0f7ff] hover:text-[#0077b6] transition border border-[#e2e8f0]">
+                <PlayCircle className="w-5 h-5 text-[#0077b6]" />
+                Xem Demo
               </button>
             </div>
 
@@ -66,16 +66,17 @@ export default function Hero() {
                     />
                   </div>
                 ))}
-                <div className="w-10 h-10 rounded-full border-2 border-white bg-brand-600 flex items-center justify-center text-xs font-bold text-white">
+                <div className="w-10 h-10 rounded-full border-2 border-white bg-[#0077b6] flex items-center justify-center text-xs font-bold text-white">
                   +2k
                 </div>
               </div>
-              <p className="text-sm text-slate-500 font-medium">
-                Joined by{" "}
-                <span className="text-slate-900 font-bold">2,500+</span>{" "}
-                developers this month
+              <p className="text-sm text-[#64748b] font-medium">
+                Tham gia cùng{" "}
+                <span className="text-[#0f172a] font-bold">2,500+</span>{" "}
+                lập trình viên tháng này
               </p>
             </div>
+
           </motion.div>
 
           <motion.div

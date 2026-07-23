@@ -5,6 +5,7 @@ import { useQuiz } from "@/hooks/quiz/useQuiz";
 import SearchFilterPanel from "@/components/SearchFilterPanel";
 import QuizList from "@/components/QuizList";
 import QuizPagination from "@/components/QuizPagination";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function QuizPage() {
   const [page, setPage] = useState(0);
@@ -26,7 +27,6 @@ export default function QuizPage() {
     setPage(0);
   };
 
-  // Hàm xử lý khi một item trong danh sách thay đổi trạng thái Like/Rate
   const handleQuizChange = (updatedQuiz) => {
     const size = 12;
 
@@ -50,17 +50,23 @@ export default function QuizPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto space-y-6">
+      <PageHeader
+        badge="Ngân hàng đề"
+        title="Bộ Câu Hỏi Ôn Luyện Phỏng Vấn"
+        description="Khám phá và tìm kiếm các bộ câu hỏi ôn kiểm tra kỹ thuật chất lượng cao từ cộng đồng và chuyên gia."
+      />
+
       <SearchFilterPanel
         onSearch={handleSearch}
         placeholder="Tìm kiếm bộ câu hỏi phỏng vấn theo tiêu đề hoặc tên người dùng"
       />
 
-      <div className="mt-8">
-        <div className="flex mb-4">
+      <div>
+        <div className="flex items-center justify-between mb-4">
           {!isLoading && (
-            <span className="text-sm text-gray-600">
-              {data?.totalElements || 0} quizzes
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              Tìm thấy {data?.totalElements || 0} bộ câu hỏi
             </span>
           )}
         </div>

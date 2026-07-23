@@ -5,8 +5,8 @@ export default function FindInterviewPage() {
   return (
     <div className="space-y-6">
       <InterviewHeader
-        title="Find Interview"
-        description="Find an interviewer and submit a request from their live availability calendar."
+        title="Tìm Kiếm Interviewer"
+        description="Tìm kiếm người phỏng vấn và đặt lịch theo khung giờ rảnh thực tế của chuyên gia."
       />
       <FindInterviewView />
     </div>

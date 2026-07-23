@@ -30,7 +30,7 @@ export default function VerifyRegisterPage() {
     mutationFn: () => sendRegisterOtp(pending.email),
     onSuccess: (data) => {
       setOtpSent(true);
-      toast.success(data.message || "OTP sent to your email");
+      toast.success(data.message || "Mã OTP đã được gửi đến email của bạn");
     },
     onError: (error) => {
       toast.error(getErrorMessage(error));
@@ -50,12 +50,12 @@ export default function VerifyRegisterPage() {
     event.preventDefault();
 
     if (!otpSent) {
-      toast.warning("Send OTP to your email first");
+      toast.warning("Vui lòng ấn gửi mã OTP về email trước");
       return;
     }
 
     if (!/^\d{6}$/.test(otp)) {
-      setOtpError("Enter the 6-digit OTP");
+      setOtpError("Vui lòng nhập đúng 6 chữ số mã OTP");
       return;
     }
 
@@ -82,17 +82,16 @@ export default function VerifyRegisterPage() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-brand">
-          <div className="auth-brand__mark">IT</div>
+          <div className="auth-brand__mark">DP</div>
           <div>
-            <p className="auth-brand__title">Interview Training</p>
-            <p className="auth-brand__subtitle">Verify your email</p>
+            <p className="auth-brand__title">DevPrep AI</p>
+            <p className="auth-brand__subtitle">Xác thực tài khoản</p>
           </div>
         </div>
 
-        <h1 className="auth-heading">Verify registration</h1>
+        <h1 className="auth-heading">Xác thực Email</h1>
         <p className="auth-description">
-          We sent a 6-digit code to <strong>{pending.email}</strong>. It expires
-          in 3 minutes.
+          Mã xác thực 6 chữ số sẽ được gửi tới email <strong>{pending.email}</strong>.
         </p>
 
         <form className="auth-form" onSubmit={handleVerify} noValidate>
@@ -102,25 +101,27 @@ export default function VerifyRegisterPage() {
             onClick={handleSendOtp}
             disabled={isBusy}
           >
-            {sendOtpMutation.isPending ? "Sending OTP…" : "Send OTP"}
+            {sendOtpMutation.isPending ? "Đang gửi OTP…" : "Gửi Mã OTP"}
           </button>
 
           <div className="auth-field">
-            <label htmlFor="register-otp">Verification code</label>
+            <label htmlFor="register-otp">Mã xác nhận (6 chữ số)</label>
             <input
               id="register-otp"
               type="text"
               inputMode="numeric"
               maxLength={6}
-              placeholder="6-digit code"
+              placeholder="000000"
               value={otp}
               onChange={(event) =>
                 setOtp(event.target.value.replace(/\D/g, ""))
               }
-              className={otpError ? "auth-field__input--error" : ""}
+              className={`text-center text-xl tracking-[0.4em] font-bold ${
+                otpError ? "auth-field__input--error" : ""
+              }`}
               disabled={isBusy || !otpSent}
             />
-            {otpError ? <p className="auth-field__error">{otpError}</p> : null}
+            {otpError ? <p className="auth-field__error text-center">{otpError}</p> : null}
           </div>
 
           <button
@@ -129,13 +130,13 @@ export default function VerifyRegisterPage() {
             disabled={isBusy || !otpSent}
           >
             {registerMutation.isPending
-              ? "Creating account…"
-              : "Verify and create account"}
+              ? "Đang tạo tài khoản…"
+              : "Xác nhận & Tạo tài khoản"}
           </button>
         </form>
 
         <p className="auth-footer">
-          Wrong email? <Link to="/register">Go back</Link>
+          Sai email? <Link to="/register">Quay lại</Link>
         </p>
       </div>
     </div>

@@ -65,8 +65,8 @@ export default function AvailabilityGrid({ value, onChange }) {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h4 className="text-sm font-semibold text-slate-800">Weekly Availability Calendar</h4>
-          <p className="text-xs text-slate-400">Click headers to toggle full rows/columns. Click individual blocks to toggle hours.</p>
+          <h4 className="text-xs font-bold text-[#0f172a] uppercase tracking-wide">Khung Giờ Rảnh Theo Tuần</h4>
+          <p className="text-xs text-[#64748b]">Bấm vào tiêu đề cột/hàng để chọn nhanh cả ngày hoặc cả khung giờ. Bấm từng ô để bật/tắt giờ lẻ.</p>
         </div>
         
         {/* Preset controls */}
@@ -74,34 +74,34 @@ export default function AvailabilityGrid({ value, onChange }) {
           <button
             type="button"
             onClick={() => applyPreset("WEEKDAYS_9_5")}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50 hover:bg-indigo-100 text-xs font-semibold text-indigo-700 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#bae6fd] bg-[#f0f7ff] hover:bg-[#e0f2fe] text-xs font-bold text-[#0077b6] transition active:scale-95 shadow-2xs"
           >
             <CalendarRange size={13} />
-            Weekdays (9am-5pm)
+            Giờ Hành Chính (9h-17h T2-T6)
           </button>
           <button
             type="button"
             onClick={() => applyPreset("EVENINGS")}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50 hover:bg-purple-100 text-xs font-semibold text-purple-700 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#ffedd5] bg-[#fff7ed] hover:bg-[#ffedd5] text-xs font-bold text-[#ff6b35] transition active:scale-95 shadow-2xs"
           >
             <Moon size={13} />
-            Evenings (6pm-9pm)
+            Buổi Tối (18h-21h)
           </button>
           <button
             type="button"
             onClick={() => onChange([])}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-100 bg-red-50 hover:bg-red-100 text-xs font-semibold text-red-700 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#fca5a5] bg-[#fee2e2] hover:bg-red-100 text-xs font-bold text-[#dc2626] transition active:scale-95 shadow-2xs"
           >
             <Trash2 size={13} />
-            Clear All
+            Xóa Tất Cả
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-100 shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border border-[#e2e8f0] shadow-2xs bg-white">
         <div className="grid min-w-[720px] grid-cols-[76px_repeat(7,minmax(84px,1fr))] text-sm">
           {/* Header Row */}
-          <div className="border-b bg-slate-50 p-2.5 font-semibold text-slate-400 text-xs flex items-center justify-center">TIME</div>
+          <div className="border-b border-[#e2e8f0] bg-[#f8fafc] p-2.5 font-bold text-[#64748b] text-[11px] flex items-center justify-center tracking-wider">GIỜ</div>
           {DAYS.map((day) => {
             const dayKeys = HOURS.map((h) => slotKey(day.value, h));
             const allActive = dayKeys.every((k) => activeKeys.has(k));
@@ -110,10 +110,10 @@ export default function AvailabilityGrid({ value, onChange }) {
                 key={day.value}
                 type="button"
                 onClick={() => toggleDayColumn(day.value)}
-                className={`border-b border-l bg-slate-50 p-2.5 text-center font-bold text-xs uppercase tracking-wider transition ${
-                  allActive ? "text-indigo-600 bg-indigo-50/50" : "text-slate-600 hover:bg-slate-100"
+                className={`border-b border-l border-[#e2e8f0] bg-[#f8fafc] p-2.5 text-center font-bold text-xs uppercase tracking-wider transition ${
+                  allActive ? "text-[#0077b6] bg-[#f0f7ff]" : "text-[#0f172a] hover:bg-[#f0f7ff]"
                 }`}
-                title={`Toggle entire ${day.label}`}
+                title={`Chọn toàn bộ ${day.label}`}
               >
                 {day.label}
               </button>
@@ -129,10 +129,10 @@ export default function AvailabilityGrid({ value, onChange }) {
                 <button
                   type="button"
                   onClick={() => toggleHourRow(hour)}
-                  className={`border-b bg-slate-50 p-2.5 text-left font-semibold text-[11px] transition ${
-                    allActive ? "text-indigo-600 bg-indigo-50/50" : "text-slate-400 hover:bg-slate-100"
+                  className={`border-b border-[#e2e8f0] bg-[#f8fafc] p-2.5 text-left font-semibold text-[11px] transition ${
+                    allActive ? "text-[#0077b6] bg-[#f0f7ff]" : "text-[#64748b] hover:bg-[#f0f7ff]"
                   }`}
-                  title={`Toggle all days at ${String(hour).padStart(2, "0")}:00`}
+                  title={`Chọn tất cả các ngày lúc ${String(hour).padStart(2, "0")}:00`}
                 >
                   {String(hour).padStart(2, "0")}:00
                 </button>
@@ -143,10 +143,10 @@ export default function AvailabilityGrid({ value, onChange }) {
                       key={slotKey(day.value, hour)}
                       type="button"
                       onClick={() => toggle(day.value, hour)}
-                      className={`h-9 border-b border-l transition duration-150 ${
+                      className={`h-9 border-b border-l border-[#e2e8f0] transition duration-150 ${
                         active 
-                          ? "bg-indigo-600 hover:bg-indigo-700 shadow-inner" 
-                          : "bg-white hover:bg-slate-50"
+                          ? "bg-[#0077b6] hover:bg-[#0096c7] shadow-inner" 
+                          : "bg-white hover:bg-[#f0f7ff]"
                       }`}
                       aria-label={`${day.label} ${hour}:00`}
                     />

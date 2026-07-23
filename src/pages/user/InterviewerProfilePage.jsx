@@ -8,8 +8,8 @@ export default function InterviewerProfilePage() {
   return (
     <div className="space-y-6">
       <InterviewHeader
-        title="My Profile"
-        description="Configure your public interviewer profile, skill coverage, and weekly availability."
+        title="Hồ Sơ Chuyên Gia Phỏng Vấn"
+        description="Cấu hình thông tin hồ sơ công khai, danh sách kỹ năng đánh giá chuyên môn, bằng cấp xác minh và lịch rảnh cố định theo tuần."
       />
       <MyProfileView user={user} />
     </div>

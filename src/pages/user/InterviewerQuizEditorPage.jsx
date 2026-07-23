@@ -11,7 +11,7 @@ import {
 } from "@/hooks/quiz/useInterviewerQuiz";
 import { useCategoryBrowse } from "@/hooks/useCategoryBrowse";
 import { useToast } from "@/context/ToastContext";
-import InterviewHeader from "@/components/interview/common/InterviewHeader";
+import PageHeader from "@/components/common/PageHeader";
 import MarkdownContent from "@/components/MarkdownContent";
 import {
   ArrowLeft,
@@ -356,18 +356,18 @@ export default function InterviewerQuizEditorPage() {
 
   const handleSave = async (submitAfterSave = false) => {
     if (!title.trim()) {
-      toast.error("Quiz title is required");
+      toast.error("Vui lòng nhập tên bộ câu hỏi");
       return;
     }
 
     if (selectedSubIds.length === 0) {
-      toast.error("Please select at least one subcategory");
+      toast.error("Vui lòng chọn ít nhất một danh mục con");
       return;
     }
 
     const activeQuestions = questionsList.filter((q) => !q._deleted);
     if (activeQuestions.length === 0) {
-      toast.error("Please add at least one question to the quiz");
+      toast.error("Vui lòng thêm ít nhất một câu hỏi vào bộ đề");
       return;
     }
 
@@ -375,7 +375,7 @@ export default function InterviewerQuizEditorPage() {
     for (let idx = 0; idx < activeQuestions.length; idx++) {
       const q = activeQuestions[idx];
       if (!q.content.trim()) {
-        toast.error(`Question #${idx + 1} content is required`);
+        toast.error(`Nội dung câu hỏi #${idx + 1} không được để trống`);
         return;
       }
       if (
@@ -384,7 +384,7 @@ export default function InterviewerQuizEditorPage() {
         !q.optionC.trim() ||
         !q.optionD.trim()
       ) {
-        toast.error(`Question #${idx + 1} options A, B, C, D are all required`);
+        toast.error(`Các lựa chọn A, B, C, D của câu hỏi #${idx + 1} đều là bắt buộc`);
         return;
       }
     }
@@ -434,7 +434,7 @@ export default function InterviewerQuizEditorPage() {
       if (submitAfterSave) {
         await submitQuizMutation.mutateAsync(quizId);
       } else {
-        toast.success("Quiz draft saved successfully");
+        toast.success("Đã lưu nháp bộ câu hỏi thành công!");
         navigate("/interviewer/quiz");
       }
     } catch (err) {
@@ -450,9 +450,9 @@ export default function InterviewerQuizEditorPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-32 gap-3">
-        <Loader2 className="animate-spin text-indigo-500" size={36} />
+        <Loader2 className="animate-spin text-[#0077b6]" size={36} />
         <p className="text-sm text-slate-400 font-medium">
-          Loading quiz content...
+          Đang tải nội dung bộ câu hỏi...
         </p>
       </div>
     );
@@ -463,53 +463,43 @@ export default function InterviewerQuizEditorPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Top Navigation & Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate("/interviewer/quiz")}
-            className="p-2 border border-slate-200 rounded-xl hover:bg-slate-100 transition active:scale-95 bg-white text-slate-600"
-            title="Back to list"
-          >
-            <ArrowLeft size={16} />
-          </button>
-          <InterviewHeader
-            title={isReadOnly ? "View Quiz Details" : "Edit Quiz Assessment"}
-            description={
-              isReadOnly
-                ? "Quiz is currently pending administrative review and cannot be modified."
-                : "Update your questions, categories, and formatting details."
-            }
-          />
-        </div>
-
-        {/* Header Action Buttons */}
+      <PageHeader
+        backUrl="/interviewer/quiz"
+        badge="Dành cho Interviewer"
+        title={isReadOnly ? "Xem Chi Tiết Bộ Câu Hỏi" : "Chỉnh Sửa Bộ Câu Hỏi"}
+        description={
+          isReadOnly
+            ? "Bộ câu hỏi đang trong quá trình chờ quản trị viên duyệt và không thể chỉnh sửa."
+            : "Cập nhật các câu hỏi, danh mục và chi tiết định dạng."
+        }
+      >
         {!isReadOnly && (
-          <div className="flex items-center gap-3 self-start sm:self-center">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => handleSave(false)}
               disabled={isSaving}
-              className="inline-flex items-center gap-1.5 px-4.5 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition shadow-sm active:scale-95 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-4.5 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition shadow-xs active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               <Save size={16} />
-              Save Draft
+              Lưu bản nháp
             </button>
             <button
               onClick={() => handleSave(true)}
               disabled={isSaving}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition shadow-sm active:scale-95 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#0077b6] hover:bg-[#0096c7] text-white text-sm font-semibold rounded-xl transition shadow-xs active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               <Send size={16} />
-              Complete & Submit
+              Hoàn tất & Gửi duyệt
             </button>
           </div>
         )}
-      </div>
+      </PageHeader>
 
       {/* Quiz metadata & Subcategory Settings Card */}
-      <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-6">
-        <h3 className="text-sm font-bold text-slate-800 border-b pb-3 flex items-center gap-2">
-          <Settings size={16} className="text-indigo-500" />
-          Quiz Settings
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs space-y-6">
+        <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
+          <Settings size={16} className="text-[#0077b6]" />
+          Cấu Hình Bộ Câu Hỏi
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -517,7 +507,7 @@ export default function InterviewerQuizEditorPage() {
           <div className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700">
-                Quiz Title
+                Tên Bộ Câu Hỏi
               </label>
               <input
                 type="text"

@@ -24,6 +24,7 @@ import {
 } from "@/components/interview/common/interviewUtils";
 import BookingCalendarGrid from "./BookingCalendarGrid";
 import RequestFormPanel from "./RequestFormPanel";
+import SubCategoryTag from "@/components/common/SubCategoryTag";
 
 function weekWindow() {
   const start = startOfCalendarWeek(new Date());
@@ -31,7 +32,10 @@ function weekWindow() {
   return { start, end };
 }
 
+import { useAuth } from "@/hooks/auth/useAuth";
+
 export default function RequestModal({ profile, onClose }) {
+  const { data: user } = useAuth();
   const [selectedKeys, setSelectedKeys] = useState(new Set());
   const [selectedSkillIds, setSelectedSkillIds] = useState(
     profile.subcategories?.map((item) => item.id).slice(0, 1) || [],
@@ -63,6 +67,9 @@ export default function RequestModal({ profile, onClose }) {
 
   const mutation = useCreateInterviewRequest({ onSuccess: onClose });
 
+  const requiredPoints = profile.pointsRequired || 10;
+  const candidatePoints = user?.point || 0;
+
   const toggleSlot = (dayOfWeek, hour) => {
     const key = slotKey(dayOfWeek, hour);
     setSelectedKeys((current) => {
@@ -88,8 +95,8 @@ export default function RequestModal({ profile, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 py-8">
-      <div className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-3xl bg-white p-6 shadow-2xl border border-slate-100 flex flex-col gap-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:px-4 sm:py-8">
+      <div className="h-full sm:h-auto max-h-full sm:max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-none sm:rounded-3xl bg-white pl-4 pr-3 py-5 sm:pl-6 sm:pr-4 sm:py-6 shadow-2xl border border-slate-200/80 flex flex-col gap-5 custom-scrollbar">
         {/* Header - Profile details */}
         <div className="relative border-b border-slate-100 pb-5">
           <button
@@ -110,8 +117,8 @@ export default function RequestModal({ profile, onClose }) {
                 className="h-16 w-16 rounded-2xl object-cover ring-4 ring-indigo-50/50"
               />
               {profile.yearsExperience != null && (
-                <span className="absolute -bottom-1 -right-1 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-white">
-                  {profile.yearsExperience}y exp
+                <span className="absolute -bottom-1 -right-1 bg-[#0077b6] text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-white">
+                  {profile.yearsExperience} năm KN
                 </span>
               )}
             </div>
@@ -123,7 +130,7 @@ export default function RequestModal({ profile, onClose }) {
                   {profile.interviewerName}
                 </h3>
                 {profile.company && (
-                  <span className="text-xs font-semibold px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-lg">
+                  <span className="text-xs font-semibold px-2 py-0.5 bg-[#f0f7ff] text-[#0077b6] border border-[#bae6fd] rounded-lg">
                     {profile.company}
                   </span>
                 )}
@@ -133,7 +140,7 @@ export default function RequestModal({ profile, onClose }) {
               </p>
 
               {profile.description && (
-                <p className="text-xs text-slate-500 mt-2 leading-relaxed max-w-3xl">
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed max-w-3xl whitespace-pre-wrap">
                   {profile.description}
                 </p>
               )}
@@ -144,17 +151,12 @@ export default function RequestModal({ profile, onClose }) {
                   <span className="flex items-center gap-1 font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
                     <Star size={12} className="fill-amber-500 text-amber-500" />
                     {profile.averageRating.toFixed(1)} (
-                    {profile.totalRatings || 0} reviews)
+                    {profile.totalRatings || 0} đánh giá)
                   </span>
                 )}
                 <div className="flex flex-wrap gap-1.5">
                   {profile.subcategories?.map((sc) => (
-                    <span
-                      key={sc.id}
-                      className="bg-slate-50 border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px] font-medium"
-                    >
-                      {sc.name}
-                    </span>
+                    <SubCategoryTag key={sc.id} name={sc.name} size="sm" />
                   ))}
                 </div>
               </div>
@@ -165,7 +167,7 @@ export default function RequestModal({ profile, onClose }) {
                 <div className="mt-4 pt-3 border-t border-slate-100">
                   <h5 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-2.5">
                     <ShieldCheck size={13} className="text-emerald-600" />
-                    Verified Credentials
+                    Hồ Sơ Đã Xác Minh
                   </h5>
                   <div className="flex flex-wrap items-start gap-3">
                     {/* Verification Image */}
@@ -174,7 +176,7 @@ export default function RequestModal({ profile, onClose }) {
                         href={profile.verificationImageUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative block w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-100 hover:border-emerald-300 transition-all shadow-sm hover:shadow-md"
+                        className="group relative block w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-100 hover:border-emerald-300 transition-all shadow-xs hover:shadow-md"
                       >
                         <img
                           src={profile.verificationImageUrl}
@@ -198,7 +200,7 @@ export default function RequestModal({ profile, onClose }) {
                             /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(docUrl);
                           const fileName =
                             docUrl.split("/").pop()?.split("?")[0] ||
-                            `Document ${idx + 1}`;
+                            `Tài liệu ${idx + 1}`;
                           const shortName =
                             fileName.length > 20
                               ? fileName.slice(0, 17) + "..."
@@ -210,7 +212,7 @@ export default function RequestModal({ profile, onClose }) {
                               href={docUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group flex items-center gap-2 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl px-3 py-2 text-xs text-slate-700 hover:text-indigo-700 transition-all shadow-sm hover:shadow-md max-w-[200px]"
+                              className="group flex items-center gap-2 bg-white border border-slate-200 hover:border-[#0077b6] rounded-xl px-3 py-2 text-xs text-slate-700 hover:text-[#0077b6] transition-all shadow-xs hover:shadow-md max-w-[200px]"
                               title={fileName}
                             >
                               {isImage ? (
@@ -221,7 +223,7 @@ export default function RequestModal({ profile, onClose }) {
                               ) : (
                                 <FileText
                                   size={14}
-                                  className="text-indigo-500 flex-shrink-0"
+                                  className="text-[#0077b6] flex-shrink-0"
                                 />
                               )}
                               <span className="truncate font-medium">
@@ -229,7 +231,7 @@ export default function RequestModal({ profile, onClose }) {
                               </span>
                               <ExternalLink
                                 size={10}
-                                className="text-slate-300 group-hover:text-indigo-400 flex-shrink-0 transition"
+                                className="text-slate-300 group-hover:text-[#0077b6] flex-shrink-0 transition"
                               />
                             </a>
                           );
@@ -247,16 +249,16 @@ export default function RequestModal({ profile, onClose }) {
         <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h4 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <Calendar size={16} className="text-indigo-600" />
-              <span>Choose Booking Slots</span>
+              <Calendar size={16} className="text-[#0077b6]" />
+              <span>Chọn Khung Giờ Phỏng Vấn</span>
             </h4>
             <p className="text-xs text-slate-500 mt-0.5">
-              Select one or more consecutive 1-hour slots to book your session.
+              Chọn một hoặc nhiều khung giờ 1 tiếng liên tiếp để đặt lịch phỏng vấn.
             </p>
           </div>
-          <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 text-xs font-semibold text-slate-700 shadow-sm flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-            Week {getWeekOfMonth(weekLabelDate)} ({formatShortDate(start)} -{" "}
+          <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 text-xs font-semibold text-slate-700 shadow-xs flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0077b6] animate-pulse" />
+            Tuần {getWeekOfMonth(weekLabelDate)} ({formatShortDate(start)} -{" "}
             {formatShortDate(addDays(end, -1))})
           </div>
         </div>
@@ -272,6 +274,7 @@ export default function RequestModal({ profile, onClose }) {
                 scheduledAt: toApiDateTime(scheduledAt),
                 durationMinutes,
                 subcategoryIds: selectedSkillIds,
+                points: requiredPoints,
                 message,
               },
             });
@@ -292,6 +295,8 @@ export default function RequestModal({ profile, onClose }) {
               selectedSkillIds={selectedSkillIds}
               setSelectedSkillIds={setSelectedSkillIds}
               durationMinutes={durationMinutes}
+              candidatePoints={candidatePoints}
+              requiredPoints={requiredPoints}
               message={message}
               setMessage={setMessage}
               isSubmitting={mutation.isPending}

@@ -29,7 +29,7 @@ function AvatarDropdown({ user }) {
     <div ref={dropdownRef} className="relative">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="overflow-hidden rounded-full border-2 border-gray-200 hover:border-blue-500 transition-all duration-200"
+        className="overflow-hidden rounded-full border-2 border-[#e2e8f0] hover:border-[#0077b6] transition-all duration-200 focus:outline-none"
       >
         <img
           src={user?.avatarUrl || "https://via.placeholder.com/40"}
@@ -39,30 +39,30 @@ function AvatarDropdown({ user }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
-          <div className="px-4 py-3 bg-gray-50 border-b">
-            <p className="font-semibold text-gray-900">{user?.username}</p>
+        <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-lg border border-[#e2e8f0] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="px-4 py-3 bg-[#f0f7ff]/60 border-b border-[#e2e8f0]">
+            <p className="font-semibold text-[#0f172a]">{user?.username}</p>
 
-            <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+            <p className="text-sm text-[#64748b] truncate">{user?.email}</p>
           </div>
 
           <div className="py-2">
             <Link
               to="/profile"
               onClick={() => setOpen(false)}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-[#f0f7ff] hover:text-[#0077b6] transition"
             >
               Profile
             </Link>
 
             <a
               href="#"
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              className="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-[#f0f7ff] hover:text-[#0077b6] transition"
             >
               Settings
             </a>
 
-            <div className="border-t my-1"></div>
+            <div className="border-t border-[#e2e8f0] my-1"></div>
 
             <button
               onClick={handleLogout}
@@ -76,6 +76,7 @@ function AvatarDropdown({ user }) {
       )}
     </div>
   );
+
 }
 
 export default AvatarDropdown;

@@ -15,6 +15,9 @@ import {
   uploadVerificationImage,
   deleteVerificationImage,
   deleteVerificationDocument,
+  fetchBookingFeedback,
+  fetchRoomAccess,
+  createReport,
 } from "@/api/interviews";
 import { useToast } from "@/context/ToastContext";
 
@@ -23,6 +26,8 @@ export const interviewKeys = {
   myProfile: ["interview-profile", "me"],
   profileBookings: (profileId, startsAt) => ["profile-bookings", profileId, startsAt],
   myBookings: ["interview-bookings"],
+  bookingFeedback: (bookingId) => ["booking-feedback", bookingId],
+  roomAccess: (bookingId) => ["room-access", bookingId],
 };
 
 export function useInterviewProfiles(filters) {
@@ -174,10 +179,40 @@ export function useSubmitInterviewFeedback() {
 
   return useMutation({
     mutationFn: ({ bookingId, payload }) => submitInterviewFeedback(bookingId, payload),
-    onSuccess: () => {
+    onSuccess: (_, { bookingId }) => {
       toast.success("Feedback submitted");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myBookings });
+      queryClient.invalidateQueries({ queryKey: interviewKeys.bookingFeedback(bookingId) });
     },
     onError: (error) => toast.error(error.message),
+  });
+}
+
+export function useBookingFeedback(bookingId) {
+  return useQuery({
+    queryKey: interviewKeys.bookingFeedback(bookingId),
+    queryFn: () => fetchBookingFeedback(bookingId),
+    enabled: Boolean(bookingId),
+  });
+}
+
+export function useRoomAccess(bookingId) {
+  return useQuery({
+    queryKey: interviewKeys.roomAccess(bookingId),
+    queryFn: () => fetchRoomAccess(bookingId),
+    enabled: Boolean(bookingId),
+    refetchInterval: 10000,
+  });
+}
+
+export function useSubmitReport() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: createReport,
+    onSuccess: () => {
+      toast.success("Report submitted successfully");
+    },
+    onError: (error) => toast.error(error.message || "Failed to submit report"),
   });
 }
