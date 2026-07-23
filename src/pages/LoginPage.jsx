@@ -49,7 +49,9 @@ export default function LoginPage() {
           <div className="auth-brand__mark">DP</div>
           <div>
             <p className="auth-brand__title">DevPrep AI</p>
-            <p className="auth-brand__subtitle">Luyện tập phỏng vấn thông minh</p>
+            <p className="auth-brand__subtitle">
+              Luyện tập phỏng vấn thông minh
+            </p>
           </div>
         </div>
 
