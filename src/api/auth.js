@@ -47,3 +47,16 @@ export function logout() {
 export function refresh() {
   return apiClient.post("/api/auth/refresh");
 }
+
+export async function sendChangePasswordOtp(oldPassword, newPassword) {
+  return apiClient.post("/api/auth/change-password/send-otp", {
+    oldPassword,
+    newPassword,
+  });
+}
+
+export async function confirmChangePassword(otp) {
+  return apiClient.post("/api/auth/change-password/confirm", {
+    otp,
+  });
+}

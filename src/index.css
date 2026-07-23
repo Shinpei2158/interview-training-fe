@@ -1,17 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
-  --color-brand-950: #172554;
+  --color-brand-50: #f0f7ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0077b6;
+  --color-brand-600: #1e6091;
+  --color-brand-700: #0096c7;
+  --color-brand-800: #023e8a;
+  --color-brand-900: #0f172a;
+  --color-brand-950: #030712;
+
+  --color-accent-50: #fff7ed;
+  --color-accent-500: #ff6b35;
+  --color-accent-600: #f77f00;
+  --color-accent-700: #e85d04;
+
+  --color-surface-body: #f1f5f9;
+  --color-surface-card: #ffffff;
+  --color-surface-hover: #f0f7ff;
+  --color-border-subtle: #e2e8f0;
 }
 
 *,
@@ -23,11 +33,39 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Unified Subcategory Tag Style */
+.tag-subcategory {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #f0f7ff;
+  color: #0077b6;
+  border: 1px solid #bae6fd;
+  transition: all 0.2s ease;
+}
+
+.tag-subcategory-sm {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.tag-subcategory:hover {
+  background-color: #e0f2fe;
+  border-color: #7dd3fc;
 }
 
 .markdown-content {
   overflow-wrap: anywhere;
+  color: #334155;
 }
 
 .markdown-content > * + * {
@@ -37,15 +75,72 @@ body {
 .markdown-content h1 {
   font-size: 1.25rem;
   line-height: 1.75rem;
+  color: #0f172a;
+  font-weight: 700;
 }
 
 .markdown-content h2 {
   font-size: 1.125rem;
   line-height: 1.75rem;
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .markdown-content h3,
 .markdown-content h4 {
   font-size: 1rem;
   line-height: 1.5rem;
+  color: #1e293b;
+}
+
+.markdown-content p {
+  color: #475569;
+}
+
+.markdown-content code {
+  background-color: #f1f5f9;
+  color: #0077b6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.875em;
+  border: 1px solid #e2e8f0;
+}
+
+/* Wiggle animation for notification bell */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-12deg); }
+  45% { transform: rotate(8deg); }
+  60% { transform: rotate(-6deg); }
+  75% { transform: rotate(3deg); }
+}
+
+/* Custom sleek scrollbar for modal popups and scrollable containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 12px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }

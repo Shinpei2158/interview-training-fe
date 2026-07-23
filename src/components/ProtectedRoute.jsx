@@ -2,9 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/auth/useAuth";
 
 export default function ProtectedRoute({ allowedRoles }) {
-  const { data: user, isLoading, isFetching } = useAuth();
+  const { data: user, isLoading } = useAuth();
 
-  if (isLoading || isFetching) {
+  if (isLoading && !user) {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="text-gray-500 font-medium">

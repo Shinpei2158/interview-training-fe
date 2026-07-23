@@ -84,10 +84,12 @@ export function useDeleteQuiz() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-quizzes"] });
-      toast.success("Quiz deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["my-private-quizzes"] });
+      queryClient.invalidateQueries({ queryKey: ["saved-questions"] });
+      toast.success("Đã xóa bộ câu hỏi thành công!");
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to delete quiz");
+      toast.error(error?.message || "Không thể xóa bộ câu hỏi");
     },
   });
 }

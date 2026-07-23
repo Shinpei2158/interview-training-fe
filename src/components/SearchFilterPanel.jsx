@@ -80,28 +80,28 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8">
       {/* Vùng Tìm Kiếm Chính */}
       <div className="relative" ref={dropdownRef}>
-        <div className="flex items-center bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md focus-within:shadow-md focus-within:border-blue-500/50 transition-all duration-300 p-1.5 md:p-2">
-          {/* Nút lọc Kỹ năng (Thu gọn icon trên mobile, hiện chữ trên desktop) */}
+        <div className="flex items-center bg-white border border-slate-200/80 rounded-2xl shadow-[0_4px_16px_-2px_rgba(15,23,42,0.05)] hover:shadow-md focus-within:shadow-md focus-within:border-[#0077b6] transition-all duration-300 p-1.5 md:p-2">
+          {/* Nút lọc Kỹ năng */}
           <button
             type="button"
             onClick={() => setOpenSkills(!openSkills)}
             className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
               openSkills
-                ? "bg-blue-50 text-blue-700"
-                : "text-gray-600 hover:bg-gray-50"
+                ? "bg-[#f0f7ff] text-[#0077b6]"
+                : "text-[#64748b] hover:bg-[#f0f7ff] hover:text-[#0077b6]"
             }`}
           >
             <Filter
               size={18}
               className={
                 selectedSubCategories.length > 0
-                  ? "text-blue-600"
-                  : "text-gray-400"
+                  ? "text-[#0077b6]"
+                  : "text-[#94a3b8]"
               }
             />
             <span className="hidden md:inline">Kỹ năng</span>
             {selectedSubCategories.length > 0 && (
-              <span className="flex items-center justify-center min-w-4.5 h-4 md:h-5 px-1 md:px-1.5 text-[10px] md:text-xs font-bold text-white bg-blue-600 rounded-full">
+              <span className="flex items-center justify-center min-w-4.5 h-4 md:h-5 px-1 md:px-1.5 text-[10px] md:text-xs font-bold text-white bg-[#0077b6] rounded-full">
                 {selectedSubCategories.length}
               </span>
             )}
@@ -122,45 +122,45 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 min-w-0 px-2 md:px-4 py-2 text-gray-800 placeholder-gray-400 outline-none text-sm bg-transparent"
+            className="flex-1 min-w-0 px-2 md:px-4 py-2 text-[#0f172a] placeholder-[#94a3b8] outline-none text-sm bg-transparent"
           />
 
-          {/* Nút Tìm Kiếm (Dạng nút tròn nhỏ trên mobile, thanh dài chữ lớn trên desktop) */}
+          {/* Nút Tìm Kiếm */}
           <button
             type="button"
             onClick={handleSearch}
-            className="flex items-center justify-center gap-2 p-2.5 md:px-5 md:py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-xl transition-all shadow-sm active:scale-[0.95]"
+            className="flex items-center justify-center gap-2 p-2.5 md:px-5 md:py-2.5 bg-[#0077b6] hover:bg-[#0096c7] text-white font-medium text-sm rounded-xl transition-all shadow-xs active:scale-[0.98]"
           >
             <Search size={18} />
             <span className="hidden sm:inline">Tìm kiếm</span>
           </button>
         </div>
 
-        {/* Dropdown Bộ lọc thông minh cho mọi kích thước màn hình */}
+        {/* Dropdown Bộ lọc thông minh */}
         {openSkills && (
           <div
             className="
             fixed inset-0 z-50 flex flex-col bg-white
-            md:absolute md:inset-auto md:top-full md:left-0 md:w-full md:mt-3 md:border md:border-gray-100 md:rounded-2xl md:shadow-xl md:max-h-120 md:overflow-hidden
+            md:absolute md:inset-auto md:top-full md:left-0 md:w-full md:mt-3 md:border md:border-slate-200/80 md:rounded-2xl md:shadow-xl md:max-h-120 md:overflow-hidden
             animate-slide-up md:animate-slide-down
           "
           >
-            {/* Header của bộ lọc - Chỉ hiển thị trên Mobile */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 md:hidden bg-white sticky top-0 z-10">
-              <div className="flex items-center gap-2 font-semibold text-gray-800 text-base">
-                <Filter size={18} className="text-blue-600" />
+            {/* Header của bộ lọc */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#e2e8f0] md:hidden bg-white sticky top-0 z-10">
+              <div className="flex items-center gap-2 font-semibold text-[#0f172a] text-base">
+                <Filter size={18} className="text-[#0077b6]" />
                 Chọn kỹ năng ôn luyện
               </div>
               <button
                 type="button"
                 onClick={() => setOpenSkills(false)}
-                className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-lg transition"
+                className="p-1.5 text-[#94a3b8] hover:bg-[#f0f7ff] rounded-lg transition"
               >
                 <X size={20} />
               </button>
             </div>
 
-            {/* Vùng cuộn chứa nội dung các Kỹ năng */}
+            {/* Vùng cuộn chứa nội dung */}
             <div className="p-5 md:p-6 space-y-6 overflow-y-auto flex-1 custom-scrollbar bg-white">
               {categories.map((category) => {
                 const subIds = category.subCategories?.map((s) => s.id) || [];
@@ -175,9 +175,9 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
                         type="checkbox"
                         checked={allSelected}
                         onChange={() => toggleCategory(category)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500/20 accent-blue-600"
+                        className="w-4 h-4 rounded border-[#e2e8f0] text-[#0077b6] focus:ring-[#0077b6]/20 accent-[#0077b6]"
                       />
-                      <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
+                      <span className="text-sm font-semibold text-[#0f172a] group-hover:text-[#0077b6] transition-colors">
                         {category.name}
                       </span>
                     </label>
@@ -192,10 +192,10 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
                             type="button"
                             key={sub.id}
                             onClick={() => toggleSubCategory(sub.id)}
-                            className={`px-3 py-1.5 rounded-xl border text-xs font-medium transition-all ${
+                            className={`px-2.5 py-1 rounded-lg border text-xs font-semibold transition-all ${
                               selected
-                                ? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-500/20"
-                                : "bg-gray-50/60 border-gray-100 text-gray-600 hover:bg-blue-50/50"
+                                ? "bg-[#0077b6] border-[#0077b6] text-white shadow-xs"
+                                : "bg-[#f0f7ff] border-[#bae6fd] text-[#0077b6] hover:bg-[#e0f2fe]"
                             }`}
                           >
                             {sub.name}
@@ -208,12 +208,12 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
               })}
             </div>
 
-            {/* Bottom Footer hành động (Cố định ở đáy trên cả Mobile và Desktop) */}
-            <div className="flex items-center justify-between gap-3 p-4 bg-gray-50 border-t border-gray-100 backdrop-blur-sm sticky bottom-0 z-10">
+            {/* Bottom Footer hành động */}
+            <div className="flex items-center justify-between gap-3 p-4 bg-[#f8fafc] border-t border-[#e2e8f0] backdrop-blur-sm sticky bottom-0 z-10">
               <button
                 type="button"
                 onClick={() => setSelectedSubCategories([])}
-                className="px-4 py-2.5 text-xs font-medium text-gray-500 rounded-xl hover:bg-gray-100 transition"
+                className="px-4 py-2.5 text-xs font-medium text-[#64748b] rounded-xl hover:bg-[#f0f7ff] hover:text-[#0077b6] transition"
               >
                 Xóa bộ lọc
               </button>
@@ -222,12 +222,12 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
                 type="button"
                 onClick={() => {
                   if (window.innerWidth < 768) {
-                    handleSearch(); // Trên mobile, bấm áp dụng sẽ kích hoạt tìm kiếm luôn để đỡ tốn thao tác
+                    handleSearch();
                   } else {
                     setOpenSkills(false);
                   }
                 }}
-                className="flex-1 md:flex-none text-center px-6 py-2.5 text-xs font-medium text-white bg-slate-900 rounded-xl hover:bg-slate-800 shadow-sm transition"
+                className="flex-1 md:flex-none text-center px-6 py-2.5 text-xs font-semibold text-white bg-[#0077b6] hover:bg-[#0096c7] rounded-xl shadow-xs transition"
               >
                 {window.innerWidth < 768
                   ? `Xem kết quả (${selectedSubCategories.length})`
@@ -241,7 +241,7 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
       {/* Danh sách các kỹ năng đã chọn nhanh ngoài màn hình chính */}
       {selectedSubObjects.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5 mt-4">
-          <span className="text-xs text-gray-400 font-medium mr-1 hidden sm:inline">
+          <span className="text-xs text-[#64748b] font-medium mr-1 hidden sm:inline">
             Đang lọc theo:
           </span>
           {selectedSubObjects.map((sub) => (
@@ -249,10 +249,10 @@ export default function SearchFilterPanel({ onSearch, placeholder }) {
               type="button"
               key={sub.id}
               onClick={() => toggleSubCategory(sub.id)}
-              className="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-100 rounded-full hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all group"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#0077b6] bg-[#f0f7ff] border border-[#bae6fd] rounded-lg hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-all group"
             >
               {sub.name}
-              <X size={12} className="text-blue-400 group-hover:text-red-400" />
+              <X size={12} className="text-[#0077b6] group-hover:text-rose-500" />
             </button>
           ))}
         </div>

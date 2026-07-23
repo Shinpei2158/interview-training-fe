@@ -32,59 +32,59 @@ export default function BookingCalendarGrid({
   return (
     <div className="space-y-4">
       {/* Legend & Instructions Panel */}
-      <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-3 shadow-sm">
+      <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-3 shadow-xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
-            <HelpCircle size={16} className="text-indigo-600" />
-            <span>Booking Guide & Calendar Legend</span>
+            <HelpCircle size={16} className="text-[#0077b6]" />
+            <span>Hướng Dẫn Đặt Lịch & Chú Thích</span>
           </div>
           <button
             type="button"
             onClick={() => setShowHelp(!showHelp)}
-            className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-0.5 transition"
+            className="text-xs text-[#0077b6] hover:text-[#0096c7] font-semibold flex items-center gap-0.5 transition cursor-pointer"
           >
-            {showHelp ? "Hide details" : "Show details"}
+            {showHelp ? "Ẩn chi tiết" : "Hiển thị chi tiết"}
           </button>
         </div>
 
         {showHelp && (
-          <div className="text-xs text-slate-600 leading-relaxed bg-white border border-slate-100 rounded-xl p-3 flex items-start gap-2.5">
-            <Info size={16} className="text-indigo-500 mt-0.5 flex-shrink-0" />
+          <div className="text-xs text-slate-600 leading-relaxed bg-white border border-slate-100 rounded-xl p-3 flex items-start gap-2.5 shadow-2xs">
+            <Info size={16} className="text-[#0077b6] mt-0.5 flex-shrink-0" />
             <div>
-              <p className="font-semibold text-slate-700">How to choose slots:</p>
-              <ul className="list-disc pl-4 mt-1 space-y-1">
-                <li>Click on any available light-blue slot to select it.</li>
-                <li>You can select consecutive 1-hour slots on the <strong>same day</strong> to extend the booking duration.</li>
-                <li>Slots in the past or already booked by others cannot be selected.</li>
+              <p className="font-bold text-slate-700">Cách chọn giờ phỏng vấn:</p>
+              <ul className="list-disc pl-4 mt-1 space-y-1 text-[11px]">
+                <li>Nhấn vào ô màu xanh nhạt khả dụng để chọn.</li>
+                <li>Bạn có thể chọn nhiều khung giờ liên tiếp trong cùng ngày để tăng thời lượng.</li>
+                <li>Các giờ đã qua hoặc đã có người khác đặt trước sẽ không chọn được.</li>
               </ul>
             </div>
           </div>
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-100/80">
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="w-3.5 h-3.5 rounded border border-indigo-200 bg-indigo-50/80 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Available</span>
+            <span className="text-[11px] font-semibold text-slate-700">Khả dụng</span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="w-3.5 h-3.5 rounded border border-indigo-700 bg-indigo-600 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Selected</span>
+            <span className="text-[11px] font-semibold text-slate-700">Đang chọn</span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="w-3.5 h-3.5 rounded border border-amber-300 bg-amber-100 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Pending Review</span>
+            <span className="text-[11px] font-semibold text-slate-700">Chờ duyệt</span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="w-3.5 h-3.5 rounded border border-rose-300 bg-rose-100 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Booked (Busy)</span>
+            <span className="text-[11px] font-semibold text-slate-700">Đã được đặt</span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="relative w-3.5 h-3.5 rounded border border-slate-300 bg-slate-100 overflow-hidden before:absolute before:inset-0 before:bg-[repeating-linear-gradient(-45deg,#cbd5e1,#cbd5e1_1px,transparent_1px,transparent_4px)] opacity-60 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Past Available</span>
+            <span className="text-[11px] font-semibold text-slate-700">Đã trôi qua</span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2">
+          <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-xl p-2 shadow-2xs">
             <span className="w-3.5 h-3.5 rounded border border-slate-100 bg-slate-50/30 flex-shrink-0" />
-            <span className="text-[11px] font-medium text-slate-700">Not Offered</span>
+            <span className="text-[11px] font-semibold text-slate-700">Chưa mở</span>
           </div>
         </div>
       </div>

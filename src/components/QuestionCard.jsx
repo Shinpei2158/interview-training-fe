@@ -6,47 +6,73 @@ import ReportButton from "@/components/quiz/ReportButton";
 export default function QuestionCard({
   question,
   isAnswerOpen,
-  isSaved, // Được map động từ API trả về ban đầu
+  isSaved,
   isSaving,
   onToggleAnswer,
   onSaveToggle,
   innerRef,
 }) {
+  const getLevelBadge = (level) => {
+    if (!level) return null;
+    const l = String(level).toUpperCase();
+    if (l === "EASY" || l === "DỄ") {
+      return (
+        <span className="rounded-lg bg-[#E6F4EA] text-[#137333] px-2.5 py-1 text-xs font-bold border border-[#c3e6cb]">
+          Dễ
+        </span>
+      );
+    }
+    if (l === "MEDIUM" || l === "TRUNG BÌNH") {
+      return (
+        <span className="rounded-lg bg-[#FEF3C7] text-[#D97706] px-2.5 py-1 text-xs font-bold border border-[#fde68a]">
+          Trung bình
+        </span>
+      );
+    }
+    if (l === "HARD" || l === "KHÓ") {
+      return (
+        <span className="rounded-lg bg-[#FEE2E2] text-[#DC2626] px-2.5 py-1 text-xs font-bold border border-[#fca5a5]">
+          Khó
+        </span>
+      );
+    }
+    return (
+      <span className="rounded-lg bg-white border border-[#e2e8f0] px-2.5 py-1 text-xs font-medium text-[#64748b]">
+        Mức độ: {question.level}
+      </span>
+    );
+  };
+
   return (
     <article
       ref={innerRef}
       className={cx(
-        "scroll-mt-24 rounded-xl border bg-white shadow-sm transition-all duration-300",
+        "scroll-mt-24 rounded-2xl border bg-white shadow-[0_4px_16px_-2px_rgba(15,23,42,0.05)] transition-all duration-300",
         isAnswerOpen
-          ? "border-blue-200 ring-4 ring-blue-50/50"
-          : "border-gray-200",
+          ? "border-[#0077b6] ring-4 ring-[#0077b6]/10"
+          : "border-slate-200/80",
       )}
     >
       {/* Card Header */}
-      <div className="flex items-start justify-between gap-4 border-b border-gray-100 bg-gray-50/50 px-5 py-4 rounded-t-xl">
+      <div className="flex items-start justify-between gap-4 border-b border-slate-200/80 bg-[#f8fafc] px-5 py-4 rounded-t-2xl">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-lg bg-blue-600 px-3 py-1 text-xs font-bold text-white shadow-sm shadow-blue-200">
+          <span className="rounded-lg bg-gradient-to-r from-[#0077b6] to-[#1e6091] px-3 py-1 text-xs font-bold text-white shadow-xs">
             Câu hỏi {question.displayNumber}
           </span>
-          {question.level && (
-            <span className="rounded-lg bg-white border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-600">
-              Mức độ: {question.level}
-            </span>
-          )}
+          {getLevelBadge(question.level)}
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
           <ReportButton reportType="QUESTION" targetId={question.id} />
-          {/* Nút Save / Unsave cải tiến trực quan */}
           <button
             type="button"
             onClick={() => onSaveToggle(question.id)}
             disabled={isSaving}
             className={cx(
-              "flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50",
               isSaved
                 ? "border-amber-200 bg-amber-50 text-amber-600"
-                : "border-gray-200 bg-white text-gray-400 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-500",
+                : "border-[#e2e8f0] bg-white text-[#64748b] hover:border-amber-300 hover:bg-amber-50 hover:text-amber-500",
             )}
             title={isSaved ? "Bỏ lưu câu hỏi" : "Lưu câu hỏi"}
           >
@@ -62,10 +88,10 @@ export default function QuestionCard({
             type="button"
             onClick={() => onToggleAnswer(question.id)}
             className={cx(
-              "flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-200",
+              "flex h-9 w-9 items-center justify-center rounded-xl border transition-all duration-200",
               isAnswerOpen
-                ? "border-blue-200 bg-blue-50 text-blue-600"
-                : "border-gray-200 bg-white text-gray-500 hover:border-blue-300 hover:bg-blue-50",
+                ? "border-[#0077b6] bg-[#f0f7ff] text-[#0077b6]"
+                : "border-[#e2e8f0] bg-white text-[#64748b] hover:border-[#0077b6] hover:bg-[#f0f7ff]",
             )}
             title={isAnswerOpen ? "Ẩn đáp án" : "Xem đáp án"}
           >
@@ -82,7 +108,7 @@ export default function QuestionCard({
       {/* Card Content */}
       <div className="p-5">
         {question.contentImageUrl && (
-          <div className="mb-4 overflow-hidden rounded-lg border border-gray-100 bg-gray-50 p-2">
+          <div className="mb-4 overflow-hidden rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-2">
             <img
               src={question.contentImageUrl}
               alt={`Hình ảnh câu hỏi ${question.displayNumber}`}
@@ -91,7 +117,7 @@ export default function QuestionCard({
           </div>
         )}
 
-        <MarkdownContent className="text-base font-medium leading-7 text-gray-800">
+        <MarkdownContent className="text-base font-medium leading-7 text-[#0f172a]">
           {question.content}
         </MarkdownContent>
 
@@ -105,22 +131,22 @@ export default function QuestionCard({
                 className={cx(
                   "rounded-xl border p-4 transition-all duration-200",
                   showAsCorrect
-                    ? "border-blue-200 bg-blue-50/60 shadow-sm shadow-blue-100"
-                    : "border-gray-100 bg-gray-50/50 hover:border-gray-200 hover:bg-gray-50",
+                    ? "border-[#10b981] bg-[#e6f4ea] shadow-xs"
+                    : "border-[#e2e8f0] bg-white hover:border-[#0077b6]/40 hover:bg-[#f0f7ff]/50",
                 )}
               >
                 <div className="flex gap-3">
                   <span
                     className={cx(
-                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold uppercase border shadow-xs transition-colors",
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold uppercase border shadow-2xs transition-colors",
                       showAsCorrect
-                        ? "border-blue-400 bg-blue-600 text-white"
-                        : "border-gray-200 bg-white text-gray-600",
+                        ? "border-[#10b981] bg-[#10b981] text-white"
+                        : "border-[#e2e8f0] bg-[#f8fafc] text-[#0f172a]",
                     )}
                   >
                     {option.label || option.key}
                   </span>
-                  <MarkdownContent className="min-w-0 text-sm font-medium leading-6 text-gray-700">
+                  <MarkdownContent className="min-w-0 text-sm font-medium leading-6 text-[#0f172a]">
                     {option.content}
                   </MarkdownContent>
                 </div>
@@ -131,13 +157,13 @@ export default function QuestionCard({
 
         {/* Answer Explanation Section */}
         {isAnswerOpen && (
-          <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50/40 p-4 animate-fade-in">
-            <div className="flex items-center gap-1.5 text-sm font-bold text-blue-800">
-              <span className="flex h-2 w-2 rounded-full bg-blue-500" />
+          <div className="mt-5 rounded-xl border border-[#0077b6]/30 bg-[#f0f7ff] p-4 animate-fade-in">
+            <div className="flex items-center gap-2 text-sm font-bold text-[#0077b6]">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#10b981]" />
               Đáp án chính xác: {question.correctAnswer}
             </div>
             {question.correctOptionText && (
-              <MarkdownContent className="mt-2 border-t border-blue-100/60 pt-2 text-sm leading-6 text-blue-900/80">
+              <MarkdownContent className="mt-2 border-t border-[#0077b6]/20 pt-2 text-sm leading-6 text-[#0f172a]">
                 {question.correctOptionText}
               </MarkdownContent>
             )}

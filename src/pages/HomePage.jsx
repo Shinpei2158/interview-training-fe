@@ -122,29 +122,29 @@ export default function HomePage() {
         <InterviewerSignup />
 
         {/* CTA Section */}
-        <section className="py-24 bg-brand-600 relative overflow-hidden">
+        <section className="py-24 bg-gradient-to-r from-[#1e6091] to-[#0077b6] relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
             <div className="absolute top-0 left-0 w-96 h-96 bg-white blur-[120px] rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-950 blur-[120px] rounded-full translate-x-1/2 translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#0f172a] blur-[120px] rounded-full translate-x-1/2 translate-y-1/2" />
           </div>
           <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-8">
-              Ready to crush your next interview?
+              Bắt đầu phỏng vấn và chinh phục công việc mơ ước!
             </h2>
-            <p className="text-brand-100 text-xl mb-12 opacity-90">
-              Join thousands of developers who have already landed roles at
-              Google, Meta, and Amazon.
+            <p className="text-[#e0f2fe] text-xl mb-12 opacity-95">
+              Gia nhập cùng hàng ngàn lập trình viên đã đỗ vào các công ty công nghệ hàng đầu.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-brand-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-brand-50 transition shadow-2xl">
-                Get Started for Free
+              <button className="bg-[#ff6b35] hover:bg-[#e85d04] text-white px-10 py-4 rounded-xl font-bold text-lg transition shadow-2xl hover:scale-105 active:scale-95 duration-200">
+                Bắt đầu phỏng vấn ngay
               </button>
-              <button className="bg-transparent border-2 border-white/30 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition">
-                View Pricing
+              <button className="bg-transparent border-2 border-white/40 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition">
+                Tìm hiểu thêm
               </button>
             </div>
           </div>
         </section>
+
       </main>
       <Footer />
     </div>

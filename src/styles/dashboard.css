@@ -1,6 +1,6 @@
 .dashboard {
   min-height: 100svh;
-  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 220px);
+  background: linear-gradient(180deg, #f0f7ff 0%, #f8fafc 220px);
 }
 
 .dashboard__header {
@@ -19,7 +19,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #2563eb;
+  color: #0077b6;
 }
 
 .dashboard__title {
@@ -34,17 +34,20 @@
 }
 
 .dashboard__logout {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #e2e8f0;
   background: #ffffff;
-  color: #334155;
+  color: #0f172a;
   border-radius: 10px;
   padding: 0.65rem 1rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .dashboard__logout:hover:not(:disabled) {
-  background: #f8fafc;
+  background: #f0f7ff;
+  border-color: #bae6fd;
+  color: #0077b6;
 }
 
 .dashboard__logout:disabled {
@@ -64,7 +67,7 @@
 }
 
 .dashboard__status--error {
-  color: #dc2626;
+  color: #ef4444;
 }
 
 .dashboard__grid {
@@ -78,7 +81,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: 1.25rem;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
 .dashboard-card__title {
@@ -105,3 +108,4 @@
   color: #94a3b8;
   font-size: 0.9rem;
 }
+

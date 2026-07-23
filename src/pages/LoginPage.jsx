@@ -32,7 +32,7 @@ export default function LoginPage() {
     event.preventDefault();
 
     if (!validateForm()) {
-      toast.warning("Please fix the highlighted fields");
+      toast.warning("Vui lòng điền đầy đủ các trường thông tin");
       return;
     }
 
@@ -46,46 +46,19 @@ export default function LoginPage() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-brand">
-          <div className="auth-brand__mark">IT</div>
+          <div className="auth-brand__mark">DP</div>
           <div>
-            <p className="auth-brand__title">Interview Training</p>
-            <p className="auth-brand__subtitle">Practice smarter every day</p>
+            <p className="auth-brand__title">DevPrep AI</p>
+            <p className="auth-brand__subtitle">Luyện tập phỏng vấn thông minh</p>
           </div>
         </div>
 
-        <h1 className="auth-heading">Welcome back</h1>
+        <h1 className="auth-heading">Đăng nhập</h1>
         <p className="auth-description">
-          Sign in to continue your interview preparation.
+          Chào mừng bạn quay lại! Đăng nhập để tiếp tục hành trình học tập.
         </p>
 
-        {GOOGLE_CLIENT_ID ? (
-          <>
-            <div className="auth-google">
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  if (!credentialResponse.credential) {
-                    toast.error("Google sign-in failed. Try again.");
-                    return;
-                  }
-
-                  googleLoginMutation.mutate(credentialResponse.credential);
-                }}
-                onError={() => {
-                  toast.error("Google sign-in was cancelled or failed.");
-                }}
-                theme="outline"
-                size="large"
-                width="100%"
-                text="continue_with"
-              />
-            </div>
-
-            <div className="auth-divider">
-              <span>or sign in with email</span>
-            </div>
-          </>
-        ) : null}
-
+        {/* Standard Email/Password Form */}
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="auth-field">
             <label htmlFor="email">Email</label>
@@ -105,7 +78,7 @@ export default function LoginPage() {
           </div>
 
           <div className="auth-field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mật khẩu</label>
             <input
               id="password"
               type="password"
@@ -120,17 +93,46 @@ export default function LoginPage() {
               <p className="auth-field__error">{errors.password}</p>
             ) : null}
             <p className="auth-field__hint">
-              <Link to="/forgot-password">Forgot password?</Link>
+              <Link to="/forgot-password">Quên mật khẩu?</Link>
             </p>
           </div>
 
           <button type="submit" className="auth-submit" disabled={isBusy}>
-            {loginMutation.isPending ? "Signing in…" : "Sign in"}
+            {loginMutation.isPending ? "Đang đăng nhập…" : "Đăng nhập"}
           </button>
         </form>
 
+        {/* Google Sign-in Below Form */}
+        {GOOGLE_CLIENT_ID ? (
+          <>
+            <div className="auth-divider">
+              <span>hoặc đăng nhập với Google</span>
+            </div>
+
+            <div className="auth-google">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  if (!credentialResponse.credential) {
+                    toast.error("Đăng nhập Google thất bại. Vui lòng thử lại.");
+                    return;
+                  }
+
+                  googleLoginMutation.mutate(credentialResponse.credential);
+                }}
+                onError={() => {
+                  toast.error("Đăng nhập Google bị hủy hoặc thất bại.");
+                }}
+                theme="outline"
+                size="large"
+                width="100%"
+                text="continue_with"
+              />
+            </div>
+          </>
+        ) : null}
+
         <p className="auth-footer">
-          Don&apos;t have an account? <Link to="/register">Create one</Link>
+          Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
         </p>
       </div>
     </div>

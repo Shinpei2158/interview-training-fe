@@ -26,11 +26,11 @@ export default function QuizSidebar({
 
   return (
     <aside className="lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] w-full flex flex-col justify-between">
-      <div className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm ring-1 ring-blue-50/50 flex flex-col h-full overflow-hidden">
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_4px_16px_-2px_rgba(15,23,42,0.05)] flex flex-col h-full overflow-hidden">
         {/* Header trạng thái */}
         <div className="mb-4 pb-4 border-b border-gray-100 shrink-0">
           <p className="text-xs font-bold uppercase tracking-wider text-blue-600">
-            {isTestMode ? "Chế độ thi thử" : "Chế độ học tập"}
+            {isTestMode ? "Chế độ kiểm tra thử" : "Chế độ ôn tập"}
           </p>
           <h2 className="mt-1 text-lg font-bold text-gray-900">
             {isTestMode ? "Tiến độ bài làm" : "Danh sách câu hỏi"}
@@ -177,31 +177,31 @@ export default function QuizSidebar({
 
         {/* Khối CTA Nộp bài / Lưu trữ (Chỉ xuất hiện khi là chế độ thi thử) */}
         {isTestMode && (
-          <div className="pt-3 border-t border-gray-100 space-y-2 shrink-0">
+          <div className="pt-3 border-t border-[#e2e8f0] space-y-2 shrink-0">
             <button
               type="button"
               onClick={onSave}
               disabled={isSaving || isSubmitting || Boolean(answerKey)}
-              className="flex w-full items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-bold text-gray-700 shadow-xs transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center rounded-xl border border-[#e2e8f0] bg-white px-4 py-2.5 text-xs font-bold text-[#0f172a] shadow-2xs transition hover:bg-[#f0f7ff] hover:text-[#0077b6] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSaving ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin text-gray-500" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#64748b]" />
               ) : (
-                <Save className="mr-2 h-4 w-4 text-gray-500" />
+                <Save className="mr-2 h-4 w-4 text-[#0077b6]" />
               )}
-              Lưu tiến độ băm đề
+              Lưu tiến độ bài làm
             </button>
 
             <button
               type="button"
               onClick={onSubmit}
               disabled={isSubmitting || Boolean(answerKey)}
-              className="flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300 disabled:shadow-none"
+              className="flex w-full items-center justify-center rounded-xl bg-[#ff6b35] hover:bg-[#e85d04] px-4 py-3 text-sm font-bold text-white shadow-md shadow-[#ff6b35]/20 transition disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
             >
               {isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
               )}
-              NỘP BÀI THI THỬ
+              NỘP BÀI KIỂM TRA THỬ
             </button>
           </div>
         )}

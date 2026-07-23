@@ -112,3 +112,15 @@ export function fetchInterviewSummary(bookingId) {
 export function fetchStringeeToken() {
   return apiClient.post("/api/interviews/stringee-token");
 }
+
+export function fetchBookingFeedback(bookingId) {
+  return apiClient.get(`/api/interviews/bookings/${bookingId}/feedback`);
+}
+
+export function fetchRoomAccess(bookingId) {
+  return apiClient.get(`/api/interviews/bookings/${bookingId}/room-access`);
+}
+
+export function createReport(payload) {
+  return apiClient.post("/api/reports", payload);
+}

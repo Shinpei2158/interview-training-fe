@@ -9,6 +9,7 @@ import {
 import { useToast } from "@/context/ToastContext";
 import QuizSidebar from "@/components/QuizSidebar";
 import MarkdownContent from "@/components/MarkdownContent";
+import PageHeader from "@/components/common/PageHeader";
 
 const OPTION_KEYS = ["A", "B", "C", "D"];
 
@@ -126,7 +127,7 @@ export default function TestQuizPage() {
     setIsSaving(true);
     try {
       await saveProgress("IN_PROGRESS");
-      toast.success("Đã tạm lưu tiến độ bài thi!");
+      toast.success("Đã tạm lưu tiến độ bài kiểm tra!");
     } catch (error) {
       toast.error(error.message || "Không thể lưu tiến độ.");
     } finally {
@@ -166,7 +167,7 @@ export default function TestQuizPage() {
       // Cập nhật lại trạng thái testData thành FINISHED để đồng bộ UI
       setTestData((prev) => ({ ...prev, status: "FINISHED" }));
       setShowScoreModal(true);
-      toast.success("Nộp bài thi thành công!");
+      toast.success("Nộp bài kiểm tra thành công!");
     } catch (error) {
       toast.error(error.message || "Gặp lỗi khi nộp bài.");
     } finally {
@@ -174,10 +175,10 @@ export default function TestQuizPage() {
     }
   };
 
-  // Làm lại bài thi (Retake)
+  // Làm lại bài kiểm tra (Retake)
   const handleRetake = async () => {
     const confirmRetake = window.confirm(
-      "Bạn có chắc chắn muốn làm lại bài thi này? Toàn bộ kết quả cũ sẽ bị xóa.",
+      "Bạn có chắc chắn muốn làm lại bài kiểm tra này? Toàn bộ kết quả cũ sẽ bị xóa.",
     );
     if (!confirmRetake) return;
 
@@ -201,7 +202,7 @@ export default function TestQuizPage() {
       setShowScoreModal(false);
       startedAtRef.current = Date.now(); // Khởi động lại bộ đếm giờ
 
-      // Cập nhật lại status của bài thi hiện tại về IN_PROGRESS
+      // Cập nhật lại status của bài kiểm tra hiện tại về IN_PROGRESS
       setTestData((prev) => ({
         ...prev,
         status: "IN_PROGRESS",
@@ -211,9 +212,9 @@ export default function TestQuizPage() {
         elapsedSeconds: 0,
       }));
 
-      toast.success("Khởi tạo lại bài thi thành công! Bắt đầu làm bài.");
+      toast.success("Khởi tạo lại bài kiểm tra thành công! Bắt đầu làm bài.");
     } catch (error) {
-      toast.error(error?.message || "Không thể khởi tạo lại bài thi.");
+      toast.error(error?.message || "Không thể khởi tạo lại bài kiểm tra.");
     } finally {
       setIsSaving(false);
     }
@@ -226,23 +227,24 @@ export default function TestQuizPage() {
           <AlertTriangle className="h-6 w-6" />
         </div>
         <h1 className="mt-4 text-xl font-bold text-gray-900">
-          Không tìm thấy dữ liệu đề thi
+          Không tìm thấy dữ liệu đề kiểm tra
         </h1>
         <p className="mt-2 text-sm text-gray-500">
-          Vui lòng khởi tạo đề thi mới từ trang ôn tập.
+          Vui lòng khởi tạo đề kiểm tra mới từ trang ôn tập.
         </p>
         <Link
           to={`/quizzes/${quizId}/study`}
-          className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-md hover:bg-blue-700 transition"
+          state={{ from: state?.from }}
+          className="mt-6 inline-flex rounded-xl bg-[#0077b6] hover:bg-[#0096c7] px-5 py-2.5 text-sm font-bold text-white shadow-md transition"
         >
-          Quay lại trang học tập
+          Quay lại trang ôn tập
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[340px_minmax(0,1fr)] bg-gray-50/30">
+    <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
       {/* SIDEBAR ĐIỀU HƯỚNG */}
       <QuizSidebar
         mode="test"
@@ -258,37 +260,33 @@ export default function TestQuizPage() {
 
       {/* NỘI DUNG HIỂN THỊ CHI TIẾT CÂU HỎI */}
       <main className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 font-sans">
-              Nội dung bài thi
-            </h1>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {answerKey
-                ? "Đang ở chế độ xem lại đáp án. Bạn có thể chọn làm lại bài thi bất cứ lúc nào."
-                : "Lựa chọn đáp án cẩn thận, không thể sửa sau khi đã nộp bài."}
-            </p>
-          </div>
+        <PageHeader
+          backUrl={`/quizzes/${quizId}/study`}
+          badge="Bài kiểm tra"
+          title="Nội Dung Bài Kiểm Tra Thử"
+          description={
+            answerKey
+              ? "Đang ở chế độ xem lại đáp án. Bạn có thể chọn làm lại bài kiểm tra bất cứ lúc nào."
+              : "Lựa chọn đáp án cẩn thận, không thể sửa sau khi đã nộp bài."
+          }
+        >
+          {answerKey && (
+            <>
+              <div className="rounded-xl bg-[#e6f4ea] px-4 py-2 border border-[#c3e6cb] text-sm font-bold text-[#137333] flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-[#137333]" /> Kết quả: {score}/
+                {questions.length} Câu đúng
+              </div>
 
-          <div className="flex items-center gap-2">
-            {answerKey && (
-              <>
-                <div className="rounded-xl bg-green-50 px-4 py-2 border border-green-100 text-sm font-bold text-green-700 flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4" /> Kết quả: {score}/
-                  {questions.length} Câu đúng
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleRetake}
-                  className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-bold text-blue-600 hover:bg-blue-100 transition flex items-center gap-1.5"
-                >
-                  <RotateCcw className="h-4 w-4" /> Làm lại bài
-                </button>
-              </>
-            )}
-          </div>
-        </div>
+              <button
+                type="button"
+                onClick={handleRetake}
+                className="rounded-xl bg-[#f0f7ff] border border-[#bae6fd] px-4 py-2 text-sm font-bold text-[#0077b6] hover:bg-[#e0f2fe] transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="h-4 w-4" /> Làm lại bài
+              </button>
+            </>
+          )}
+        </PageHeader>
 
         {questions.map((question, index) => {
           const correctAnswer = answerKey?.get(question.id);
@@ -301,18 +299,18 @@ export default function TestQuizPage() {
                 questionRefs.current[question.id] = node;
               }}
               className={cx(
-                "scroll-mt-24 rounded-xl border bg-white shadow-sm transition-all duration-300",
+                "scroll-mt-24 rounded-xl border bg-white shadow-2xs transition-all duration-300",
                 selectedAnswer
-                  ? "border-blue-200 ring-4 ring-blue-50/30"
-                  : "border-gray-200",
+                  ? "border-[#0077b6] ring-4 ring-[#0077b6]/10"
+                  : "border-[#e2e8f0]",
               )}
             >
-              <div className="flex flex-wrap items-center gap-2 border-b border-gray-100 bg-gray-50/50 px-5 py-4 rounded-t-xl">
-                <span className="rounded-lg bg-blue-600 px-3 py-1 text-xs font-bold text-white">
+              <div className="flex flex-wrap items-center gap-2 border-b border-[#e2e8f0] bg-[#f8fafc] px-5 py-4 rounded-t-xl">
+                <span className="rounded-lg bg-[#0077b6] px-3 py-1 text-xs font-bold text-white">
                   Câu hỏi {index + 1}
                 </span>
                 {question.level && (
-                  <span className="rounded-lg bg-white border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-600">
+                  <span className="rounded-lg bg-white border border-[#e2e8f0] px-2.5 py-1 text-xs font-medium text-[#64748b]">
                     Cấp độ: {question.level}
                   </span>
                 )}
@@ -320,7 +318,7 @@ export default function TestQuizPage() {
 
               <div className="p-5">
                 {question.contentImageUrl && (
-                  <div className="mb-4 overflow-hidden rounded-lg border border-gray-100 bg-gray-50 p-2">
+                  <div className="mb-4 overflow-hidden rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-2">
                     <img
                       src={question.contentImageUrl}
                       alt={`Hình ảnh câu hỏi ${question.displayNumber}`}
@@ -329,7 +327,7 @@ export default function TestQuizPage() {
                   </div>
                 )}
 
-                <MarkdownContent className="text-base font-medium leading-7 text-gray-800">
+                <MarkdownContent className="text-base font-medium leading-7 text-[#0f172a]">
                   {question.content}
                 </MarkdownContent>
 
@@ -347,13 +345,13 @@ export default function TestQuizPage() {
                           "flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-all duration-200",
                           answerKey
                             ? isCorrect
-                              ? "border-green-300 bg-green-50/60 shadow-xs"
+                              ? "border-[#10b981] bg-[#e6f4ea] shadow-2xs"
                               : isWrongSelection
-                                ? "border-red-300 bg-red-50/60 shadow-xs"
-                                : "border-gray-100 bg-gray-50/50 opacity-60 cursor-not-allowed"
+                                ? "border-[#ef4444] bg-[#fee2e2] shadow-2xs"
+                                : "border-[#e2e8f0] bg-[#f8fafc] opacity-60 cursor-not-allowed"
                             : isSelected
-                              ? "border-blue-400 bg-blue-50/60"
-                              : "border-gray-100 bg-gray-50/50 hover:border-gray-300 hover:bg-gray-50",
+                              ? "border-[#0077b6] bg-[#f0f7ff]"
+                              : "border-[#e2e8f0] bg-white hover:border-[#bae6fd] hover:bg-[#f0f7ff]/50",
                         )}
                       >
                         <input
@@ -369,7 +367,7 @@ export default function TestQuizPage() {
                             }));
                             setCurrentQuestionIndex(index);
                           }}
-                          className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500/30 disabled:cursor-not-allowed"
+                          className="mt-1 h-4 w-4 text-[#0077b6] focus:ring-[#0077b6]/30 disabled:cursor-not-allowed accent-[#0077b6]"
                         />
                         <div className="min-w-0 flex-1 -mt-0.5">
                           <span
@@ -377,18 +375,18 @@ export default function TestQuizPage() {
                               "inline-flex h-6 w-6 items-center justify-center rounded-md text-xs font-bold border mr-2",
                               answerKey
                                 ? isCorrect
-                                  ? "bg-green-600 text-white border-green-600"
+                                  ? "bg-[#10b981] text-white border-[#10b981]"
                                   : isWrongSelection
-                                    ? "bg-red-600 text-white border-red-600"
-                                    : "bg-white text-gray-400"
+                                    ? "bg-[#ef4444] text-white border-[#ef4444]"
+                                    : "bg-white text-[#94a3b8]"
                                 : isSelected
-                                  ? "bg-blue-600 text-white border-blue-600"
-                                  : "bg-white text-gray-600 border-gray-200",
+                                  ? "bg-[#0077b6] text-white border-[#0077b6]"
+                                  : "bg-white text-[#64748b] border-[#e2e8f0]",
                             )}
                           >
                             {option.label}
                           </span>
-                          <MarkdownContent className="inline text-sm font-medium text-gray-700">
+                          <MarkdownContent className="inline text-sm font-medium text-[#0f172a]">
                             {option.content}
                           </MarkdownContent>
                         </div>
@@ -401,6 +399,7 @@ export default function TestQuizPage() {
           );
         })}
       </main>
+
 
       {/* POPUP HIỂN THỊ KẾT QUẢ ĐIỂM SỐ */}
       {showScoreModal && (
@@ -446,7 +445,7 @@ export default function TestQuizPage() {
                 onClick={handleRetake}
                 className="w-full rounded-xl border border-gray-200 bg-white py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition flex items-center justify-center gap-1.5"
               >
-                <RotateCcw className="h-4 w-4" /> Làm lại bài thi mới
+                <RotateCcw className="h-4 w-4" /> Làm lại bài kiểm tra mới
               </button>
             </div>
           </div>

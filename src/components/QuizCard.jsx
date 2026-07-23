@@ -1,21 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Calendar, HelpCircle, Star } from "lucide-react";
 import QuizActions from "./quiz/QuizActions";
+import SubCategoryTag from "@/components/common/SubCategoryTag";
 
 export default function QuizCard({ quiz, onChange }) {
+  const location = useLocation();
+
   return (
-    <div className="group relative flex flex-col justify-between bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300">
+    <div className="group relative flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl p-5 shadow-[0_4px_16px_-2px_rgba(15,23,42,0.05)] hover:shadow-md hover:border-[#bae6fd] hover:bg-[#f0f7ff]/30 transition-all duration-300">
       <Link
         to={`/quizzes/${quiz.id}/study`}
+        state={{ from: location.pathname }}
         className="flex-1 block focus:outline-none"
       >
         {/* Title */}
-        <h3 className="font-semibold text-gray-900 text-lg line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+        <h3 className="font-bold text-[#0f172a] text-lg line-clamp-2 mb-2 group-hover:text-[#0077b6] transition-colors duration-200">
           {quiz.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">
+        <p className="text-sm text-[#64748b] line-clamp-2 mb-4 leading-relaxed">
           {quiz.description || "Chưa có mô tả cho bộ câu hỏi phỏng vấn này."}
         </p>
 
@@ -23,30 +27,25 @@ export default function QuizCard({ quiz, onChange }) {
         <div className="flex flex-wrap gap-1.5 mb-4">
           {quiz.subCategories?.length ? (
             quiz.subCategories.map((sub) => (
-              <span
-                key={sub.id}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100 group-hover:bg-blue-50/50 group-hover:text-blue-600 group-hover:border-blue-100 transition-colors"
-              >
-                {sub.name}
-              </span>
+              <SubCategoryTag key={sub.id} name={sub.name} size="sm" />
             ))
           ) : (
-            <span className="text-xs text-gray-400 italic">General</span>
+            <span className="text-xs text-[#94a3b8] italic">General</span>
           )}
         </div>
 
         {/* Rating & Like */}
         <div className="flex items-center gap-5 mb-4 text-sm">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <Star
               size={16}
               className={
                 quiz.userRating > 0
-                  ? "fill-amber-400 text-amber-400"
-                  : "text-amber-400"
+                  ? "fill-[#f59e0b] text-[#f59e0b]"
+                  : "text-[#f59e0b]"
               }
             />
-            <span className="font-medium text-gray-500">
+            <span className="font-medium text-[#64748b]">
               {Number(quiz.averageRate ?? 0).toFixed(1)} ({quiz.totalRate ?? 0}{" "}
               lượt đánh giá)
             </span>
@@ -55,7 +54,7 @@ export default function QuizCard({ quiz, onChange }) {
       </Link>
 
       {/* Footer */}
-      <div className="pt-4 border-t border-gray-50/80">
+      <div className="pt-4 border-t border-[#e2e8f0]">
         {/* Thông tin tác giả */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -63,19 +62,19 @@ export default function QuizCard({ quiz, onChange }) {
               <img
                 src={quiz.avatarUrl || "/default-avatar.png"}
                 alt={quiz.username || "User"}
-                className="w-6 h-6 rounded-full object-cover ring-1 ring-gray-100"
+                className="w-6 h-6 rounded-full object-cover ring-1 ring-[#e2e8f0]"
               />
 
-              <span className="font-medium text-gray-700 text-xs max-w-25 truncate">
+              <span className="font-medium text-[#0f172a] text-xs max-w-25 truncate">
                 {quiz.username || "Ẩn danh"}
               </span>
             </div>
 
-            <span className="w-1 h-1 bg-gray-300 rounded-full" />
+            <span className="w-1 h-1 bg-[#cbd5e1] rounded-full" />
 
-            <div className="flex items-center gap-1 text-gray-400 text-xs">
-              <HelpCircle size={13} />
-              <span className="font-medium text-gray-600">
+            <div className="flex items-center gap-1 text-[#64748b] text-xs">
+              <HelpCircle size={13} className="text-[#0077b6]" />
+              <span className="font-medium text-[#64748b]">
                 {quiz.totalQuestion ?? 0} câu
               </span>
             </div>
@@ -84,7 +83,7 @@ export default function QuizCard({ quiz, onChange }) {
 
         {/* Action */}
         <div className="mt-3 flex items-center justify-between">
-          <span className="text-[11px] text-gray-400 flex items-center gap-1">
+          <span className="text-[11px] text-[#64748b] flex items-center gap-1">
             <Calendar size={12} />
             {new Date(quiz.createdAt).toLocaleDateString()}
           </span>

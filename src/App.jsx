@@ -11,6 +11,9 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminQuizzesPage from "./pages/admin/AdminQuizzesPage";
+import AdminReportsPage from "./pages/admin/AdminReportsPage";
 import MainLayout from "./layouts/MainLayout";
 import QuizPage from "./pages/user/QuizPage";
 import FindInterviewPage from "./pages/user/FindInterviewPage";
@@ -26,6 +29,8 @@ import SavedQuestionsPage from "./pages/user/SavedQuestionsPage";
 import QuizProgressPage from "./pages/user/QuizProgressPage";
 import LikedQuizzesPage from "./pages/user/LikedQuizzesPage";
 import ProfilePage from "./pages/user/ProfilePage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
+import VirtualRoomPage from "./pages/user/VirtualRoomPage";
 
 export default function App() {
   return (
@@ -44,6 +49,16 @@ export default function App() {
           </Route>
 
           <Route path="/" element={<HomePage />} />
+
+          <Route
+            element={
+              <ProtectedRoute
+                allowedRoles={["USER", "INTERVIEWER", "ADMIN"]}
+              />
+            }
+          >
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+          </Route>
 
           <Route element={<MainLayout />}>
             <Route
@@ -96,10 +111,17 @@ export default function App() {
                 element={<InterviewerQuizEditorPage />}
               />
             </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/quizzes" element={<AdminQuizzesPage />} />
+              <Route path="/admin/reports" element={<AdminReportsPage />} />
+            </Route>
           </Route>
 
-          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          <Route element={<ProtectedRoute allowedRoles={["USER", "INTERVIEWER"]} />}>
+            <Route path="/interview/room/:bookingId" element={<VirtualRoomPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -109,3 +131,4 @@ export default function App() {
     </ToastProvider>
   );
 }
+

@@ -40,7 +40,10 @@ function renderInline(text) {
       );
     } else if (token.startsWith("`")) {
       nodes.push(
-        <code key={key} className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.95em] text-slate-800">
+        <code
+          key={key}
+          className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.95em] text-slate-800"
+        >
           {token.slice(1, -1)}
         </code>,
       );
@@ -98,7 +101,10 @@ export default function MarkdownContent({ children, className = "" }) {
       }
       index += 1;
       blocks.push(
-        <pre key={`code-${index}`} className="overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50">
+        <pre
+          key={`code-${index}`}
+          className="overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50"
+        >
           <code>{codeLines.join("\n")}</code>
         </pre>,
       );
@@ -109,7 +115,10 @@ export default function MarkdownContent({ children, className = "" }) {
     if (heading) {
       const HeadingTag = `h${Math.min(heading[1].length, 4)}`;
       blocks.push(
-        <HeadingTag key={`heading-${index}`} className="font-bold text-slate-900">
+        <HeadingTag
+          key={`heading-${index}`}
+          className="font-bold text-slate-900"
+        >
           {renderInline(heading[2])}
         </HeadingTag>,
       );
@@ -146,7 +155,10 @@ export default function MarkdownContent({ children, className = "" }) {
     const quote = line.match(/^>\s+(.+)$/);
     if (quote) {
       blocks.push(
-        <blockquote key={`quote-${index}`} className="border-l-4 border-blue-200 pl-3 text-slate-600">
+        <blockquote
+          key={`quote-${index}`}
+          className="border-l-4 border-blue-200 pl-3 text-slate-600"
+        >
           {renderInline(quote[1])}
         </blockquote>,
       );
@@ -170,7 +182,7 @@ export default function MarkdownContent({ children, className = "" }) {
     }
 
     blocks.push(
-      <p key={`p-${index}`} className="break-words">
+      <p key={`p-${index}`} className="wrap-break-word">
         {renderInline(paragraph.join(" "))}
       </p>,
     );

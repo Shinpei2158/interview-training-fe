@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, X } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   fetchQuizLevelCounts,
   generateQuizTest,
@@ -12,10 +12,13 @@ import { cx } from "../../utils/filter";
 import QuestionCard from "@/components/QuestionCard";
 import QuizSidebar from "@/components/QuizSidebar";
 import { useQueryClient } from "@tanstack/react-query";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function StudyQuizPage() {
   const { quizId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromUrl = location.state?.from;
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { questions, isLoading, isError } = useStudyQuiz(quizId);
@@ -141,7 +144,7 @@ export default function StudyQuizPage() {
         levels: selectedLevels,
       });
 
-      navigate(`/quizzes/${quizId}/test`, { state: { test } });
+      navigate(`/quizzes/${quizId}/test`, { state: { test, from: fromUrl } });
     } catch (error) {
       toast.error(error.message || "Không thể tạo đề thi");
     } finally {
@@ -177,7 +180,7 @@ export default function StudyQuizPage() {
   }
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-0 py-6 lg:grid-cols-[340px_minmax(0,1fr)] bg-emerald-50/30">
+    <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
       {/* Component Sidebar */}
       <QuizSidebar
         questions={questions}
@@ -188,26 +191,23 @@ export default function StudyQuizPage() {
 
       {/* List Câu hỏi chính */}
       <main className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-100 pb-4">
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">Study mode</h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Review calmly before starting a timed simulation.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setIsTestFormOpen(true)}
-              className="rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-100 transition-all hover:bg-emerald-800"
-            >
-              Start test
-            </button>
-          </div>
-        </div>
+        <PageHeader
+          backUrl={fromUrl || undefined}
+          badge="Chế độ ôn tập"
+          title={questions[0]?.quizTitle || "Ôn Tập Bộ Câu Hỏi"}
+          description="Ôn luyện kiến thức và đáp án chi tiết từng câu hỏi trước khi bắt đầu bài kiểm tra thử tính giờ."
+        >
+          <button
+            type="button"
+            onClick={() => setIsTestFormOpen(true)}
+            className="rounded-xl bg-[#ff6b35] hover:bg-[#e85d04] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-[#ff6b35]/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Bắt đầu bài kiểm tra
+          </button>
+        </PageHeader>
 
         {questions.length === 0 ? (
-          <div className="rounded-xl border-2 border-dashed border-gray-200 bg-white px-6 py-16 text-center text-sm font-medium text-gray-400">
+          <div className="rounded-xl border-2 border-dashed border-[#e2e8f0] bg-white px-6 py-16 text-center text-sm font-medium text-[#94a3b8]">
             Bộ câu hỏi này hiện tại chưa có dữ liệu.
           </div>
         ) : (
@@ -230,19 +230,19 @@ export default function StudyQuizPage() {
 
       {/* 3. Form Modal tạo Test */}
       {isTestFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-xs px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={handleGenerateTest}
-            className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl border border-gray-100 animate-scale-in"
+            className="w-full h-full sm:h-auto max-h-full sm:max-h-[90vh] max-w-md flex flex-col rounded-none sm:rounded-3xl bg-white shadow-2xl border border-[#e2e8f0] overflow-hidden"
           >
-            <div className="flex items-start justify-between border-b border-gray-100 pb-3">
+            <div className="flex items-start justify-between border-b border-[#e2e8f0] px-6 py-4 shrink-0 bg-white">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">
-                  Cấu hình đề thi
+                <h2 className="text-lg font-bold text-[#0f172a]">
+                  Cấu hình đề kiểm tra
                 </h2>
-                <p className="mt-0.5 text-xs text-gray-500">
+                <p className="mt-0.5 text-xs text-[#64748b]">
                   Có{" "}
-                  <span className="font-semibold text-blue-600">
+                  <span className="font-semibold text-[#0077b6]">
                     {selectedLevelTotal}
                   </span>{" "}
                   câu hỏi khả dụng
@@ -251,85 +251,90 @@ export default function StudyQuizPage() {
               <button
                 type="button"
                 onClick={() => setIsTestFormOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-[#94a3b8] hover:bg-[#f0f7ff] hover:text-[#0077b6] transition"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="mt-4">
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-600">
-                Số lượng câu hỏi
-              </label>
-              <input
-                type="number"
-                min="5"
-                max={Math.max(5, selectedLevelTotal)}
-                value={questionCount}
-                onChange={(event) =>
-                  setQuestionCount(Number(event.target.value))
-                }
-                className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm font-medium outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
-              />
+            <div className="flex-1 overflow-y-auto pl-6 pr-4 py-6 space-y-4 custom-scrollbar">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#64748b]">
+                  Số lượng câu hỏi
+                </label>
+                <input
+                  type="number"
+                  min="5"
+                  max={Math.max(5, selectedLevelTotal)}
+                  value={questionCount}
+                  onChange={(event) =>
+                    setQuestionCount(Number(event.target.value))
+                  }
+                  className="mt-2 w-full rounded-xl border border-[#e2e8f0] px-3.5 py-2.5 text-sm font-medium outline-none transition focus:border-[#0077b6]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#64748b] mb-2">
+                  Lọc theo cấp độ câu hỏi
+                </label>
+
+                {isLevelCountsLoading ? (
+                  <div className="flex items-center text-xs text-[#94a3b8] py-2">
+                    <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin text-[#0077b6]" />
+                    Đang quét dữ liệu phân loại...
+                  </div>
+                ) : (
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {levelCounts.map((item) => {
+                      const isDisabled = item.totalQuestions === 0;
+                      return (
+                        <label
+                          key={item.level}
+                          className={cx(
+                            "flex items-center justify-between rounded-xl border px-3 py-2.5 text-xs font-medium cursor-pointer transition-all",
+                            isDisabled
+                              ? "border-[#e2e8f0] bg-[#f8fafc] text-[#cbd5e1] cursor-not-allowed"
+                              : "border-[#e2e8f0] text-[#0f172a] hover:bg-[#f0f7ff]",
+                          )}
+                        >
+                          <span className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={selectedLevels.includes(item.level)}
+                              disabled={isDisabled}
+                              onChange={() => toggleLevel(item.level)}
+                              className="h-4 w-4 rounded border-[#e2e8f0] text-[#0077b6] focus:ring-[#0077b6]"
+                            />
+                            {item.level}
+                          </span>
+                          <span className="rounded-md bg-[#f0f7ff] px-1.5 py-0.5 text-[10px] font-bold text-[#0077b6]">
+                            {item.totalQuestions}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="mt-4">
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">
-                Lọc theo cấp độ câu hỏi
-              </label>
-
-              {isLevelCountsLoading ? (
-                <div className="flex items-center text-xs text-gray-400 py-2">
-                  <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin text-blue-600" />
-                  Đang quét dữ liệu phân loại...
-                </div>
-              ) : (
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {levelCounts.map((item) => {
-                    const isDisabled = item.totalQuestions === 0;
-                    return (
-                      <label
-                        key={item.level}
-                        className={cx(
-                          "flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium cursor-pointer transition-all",
-                          isDisabled
-                            ? "border-gray-100 bg-gray-50/50 text-gray-300 cursor-not-allowed"
-                            : "border-gray-200 text-gray-700 hover:bg-gray-50",
-                        )}
-                      >
-                        <span className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={selectedLevels.includes(item.level)}
-                            disabled={isDisabled}
-                            onChange={() => toggleLevel(item.level)}
-                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          {item.level}
-                        </span>
-                        <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-500">
-                          {item.totalQuestions}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
+            <div className="px-6 py-4 border-t border-[#e2e8f0] shrink-0 bg-white">
+              <button
+                type="submit"
+                disabled={isGeneratingTest || isLevelCountsLoading}
+                className="flex w-full items-center justify-center rounded-xl bg-[#0077b6] hover:bg-[#0096c7] py-2.5 text-sm font-bold text-white shadow-md shadow-[#0077b6]/20 transition-all disabled:cursor-not-allowed disabled:bg-gray-300 active:scale-95"
+              >
+                {isGeneratingTest && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
+                )}
+                Tạo đề kiểm tra ngay
+              </button>
             </div>
-
-            <button
-              type="submit"
-              disabled={isGeneratingTest || isLevelCountsLoading}
-              className="mt-6 flex w-full items-center justify-center rounded-xl bg-blue-600 py-3 text-sm font-bold text-white shadow-md shadow-blue-200 transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
-            >
-              {isGeneratingTest && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Tạo đề thi ngay
-            </button>
           </form>
         </div>
       )}
+
     </div>
   );
 }
