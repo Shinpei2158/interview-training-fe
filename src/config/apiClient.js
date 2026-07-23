@@ -81,7 +81,10 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         return Promise.reject(
-          toApiError(refreshError, "Your session has expired. Please sign in again."),
+          toApiError(
+            refreshError,
+            "Your session has expired. Please sign in again.",
+          ),
         );
       }
     }
