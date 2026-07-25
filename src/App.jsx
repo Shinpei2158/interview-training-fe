@@ -4,6 +4,10 @@ import ToastContainer from "./components/Toast/ToastContainer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import FeaturesPage from "./pages/FeaturesPage";
+import ResourcesPage from "./pages/ResourcesPage";
+import CommunityPage from "./pages/CommunityPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import VerifyRegisterPage from "./pages/VerifyRegisterPage";
@@ -12,11 +16,13 @@ import VerifyForgotPasswordPage from "./pages/VerifyForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminInterviewerRequestsPage from "./pages/admin/AdminInterviewerRequestsPage";
 import AdminQuizzesPage from "./pages/admin/AdminQuizzesPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
 import MainLayout from "./layouts/MainLayout";
 import QuizPage from "./pages/user/QuizPage";
 import FindInterviewPage from "./pages/user/FindInterviewPage";
+import InterviewerApplyPage from "./pages/user/InterviewerApplyPage";
 import MyInterviewSchedulePage from "./pages/user/MyInterviewSchedulePage";
 import InterviewerProfilePage from "./pages/user/InterviewerProfilePage";
 import InterviewerRequestsPage from "./pages/user/InterviewerRequestsPage";
@@ -49,6 +55,10 @@ export default function App() {
           </Route>
 
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/community" element={<CommunityPage />} />
 
           <Route
             element={
@@ -73,6 +83,7 @@ export default function App() {
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
+              <Route path="/interviewer/apply" element={<InterviewerApplyPage />} />
               <Route path="/quiz" element={<QuizPage />} />
               <Route
                 path="/quizzes/:quizId/study"
@@ -115,6 +126,7 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
               <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/interviewer-requests" element={<AdminInterviewerRequestsPage />} />
               <Route path="/admin/quizzes" element={<AdminQuizzesPage />} />
               <Route path="/admin/reports" element={<AdminReportsPage />} />
             </Route>

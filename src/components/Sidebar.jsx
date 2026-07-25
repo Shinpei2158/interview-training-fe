@@ -18,9 +18,12 @@ import {
   UserRoundCog,
   Heart,
   ShieldCheck,
+  UserCheck,
   Users,
   AlertTriangle,
   LogOut,
+  X,
+  Award,
 } from "lucide-react";
 
 const SIDEBAR_MENU = [
@@ -51,6 +54,12 @@ const SIDEBAR_MENU = [
     ],
   },
   {
+    title: "Ứng tuyển Chuyên gia",
+    icon: Award,
+    path: "/interviewer/apply",
+    roles: ["USER"],
+  },
+  {
     title: "Dành cho Interviewer",
     icon: ClipboardList,
     roles: ["INTERVIEWER"],
@@ -77,6 +86,7 @@ const SIDEBAR_MENU = [
     children: [
       { title: "Tổng quan hệ thống", icon: BarChart3, path: "/admin/dashboard" },
       { title: "Quản lý người dùng", icon: Users, path: "/admin/users" },
+      { title: "Duyệt Chuyên gia", icon: UserCheck, path: "/admin/interviewer-requests" },
       { title: "Quản lý bộ câu hỏi", icon: GraduationCap, path: "/admin/quizzes" },
       { title: "Xử lý sự cố & vi phạm", icon: AlertTriangle, path: "/admin/reports" },
     ],
@@ -108,7 +118,7 @@ const isChildActive = (childPath, currentPath, siblings = []) => {
   return false;
 };
 
-export default function Sidebar({ user, collapsed, setCollapsed }) {
+export default function Sidebar({ user, collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
   const { pathname } = useLocation();
   const logoutMutation = useLogout();
   const flyoutTimerRef = useRef(null);
@@ -180,33 +190,49 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
     <aside
       className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/80 transition-all duration-300 z-40 shadow-xs flex flex-col ${
         collapsed ? "w-20 overflow-visible" : "w-72"
+      } ${
+        mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       }`}
     >
       {/* Logo Header */}
       <div className="h-20 px-5 border-b border-slate-200/80 flex items-center justify-between shrink-0">
-        {!collapsed && (
+        {(!collapsed || mobileOpen) && (
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0077b6] to-[#1e6091] flex items-center justify-center shadow-xs">
               <Code2 className="w-5 h-5 text-white" />
             </div>
 
             <span className="font-bold text-xl text-[#0f172a]">
-              DevPrep <span className="text-[#0077b6]">AI</span>
+              DevPrep
             </span>
           </div>
         )}
 
-        <button
-          onClick={() => {
-            if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current);
-            setCollapsed(!collapsed);
-            setActiveFlyout(null);
-          }}
-          title={collapsed ? "Mở rộng thanh điều hướng" : "Thu gọn thanh điều hướng"}
-          className="p-2 rounded-lg text-slate-500 hover:bg-[#f0f7ff] hover:text-[#0077b6] transition-colors cursor-pointer"
-        >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Close button on mobile */}
+          {setMobileOpen && (
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="p-2 rounded-lg text-slate-500 hover:bg-[#f0f7ff] hover:text-[#0077b6] lg:hidden transition-colors cursor-pointer"
+              title="Đóng thanh điều hướng"
+            >
+              <X size={18} />
+            </button>
+          )}
+
+          {/* Toggle button on desktop */}
+          <button
+            onClick={() => {
+              if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current);
+              setCollapsed(!collapsed);
+              setActiveFlyout(null);
+            }}
+            title={collapsed ? "Mở rộng thanh điều hướng" : "Thu gọn thanh điều hướng"}
+            className="hidden lg:block p-2 rounded-lg text-slate-500 hover:bg-[#f0f7ff] hover:text-[#0077b6] transition-colors cursor-pointer"
+          >
+            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+          </button>
+        </div>
       </div>
 
       {/* Navigation Menu */}
@@ -222,6 +248,7 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
                 onClick={() => {
                   if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current);
                   setActiveFlyout(null);
+                  if (setMobileOpen) setMobileOpen(false);
                 }}
                 title={collapsed ? item.title : undefined}
                 className={({ isActive }) =>
@@ -296,6 +323,9 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
                       <NavLink
                         key={child.path}
                         to={child.path}
+                        onClick={() => {
+                          if (setMobileOpen) setMobileOpen(false);
+                        }}
                         className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all ${
                           active
                             ? "bg-[#f0f7ff] text-[#0077b6] font-semibold"
@@ -335,6 +365,7 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
                           onClick={() => {
                             if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current);
                             setActiveFlyout(null);
+                            if (setMobileOpen) setMobileOpen(false);
                           }}
                           className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                             active
@@ -362,6 +393,9 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
             <div className="flex items-center justify-between gap-3 p-2 rounded-xl hover:bg-slate-100/80 transition-colors">
               <Link
                 to="/profile"
+                onClick={() => {
+                  if (setMobileOpen) setMobileOpen(false);
+                }}
                 className="flex items-center gap-3 min-w-0 flex-1 group"
               >
                 <img
@@ -389,7 +423,13 @@ export default function Sidebar({ user, collapsed, setCollapsed }) {
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 py-1">
-              <Link to="/profile" title={`${user?.username} (${user?.email})`}>
+              <Link
+                to="/profile"
+                title={`${user?.username} (${user?.email})`}
+                onClick={() => {
+                  if (setMobileOpen) setMobileOpen(false);
+                }}
+              >
                 <img
                   src={user?.avatarUrl || "https://via.placeholder.com/40"}
                   alt={user?.username || "Avatar"}

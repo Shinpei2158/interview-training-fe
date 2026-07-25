@@ -1,6 +1,6 @@
 export function getErrorMessage(error) {
   if (!error) {
-    return "Something went wrong";
+    return "Có lỗi xảy ra, vui lòng thử lại sau";
   }
 
   if (typeof error === "string") {
@@ -15,5 +15,5 @@ export function getErrorMessage(error) {
     return error.message;
   }
 
-  return "Something went wrong";
+  return "Có lỗi xảy ra, vui lòng thử lại sau";
 }

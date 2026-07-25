@@ -274,7 +274,7 @@ export default function VirtualRoomPage() {
       </main>
 
       {/* Floating Bottom Control Bar */}
-      <footer className="h-20 bg-slate-900/90 backdrop-blur-md border-t border-slate-800/80 px-6 flex items-center justify-center gap-4 flex-shrink-0 z-20">
+      <footer className="h-20 bg-slate-900/90 backdrop-blur-md border-t border-slate-800/80 px-3 sm:px-6 flex items-center justify-center gap-2 sm:gap-4 flex-shrink-0 z-20">
         {/* Toggle Mic */}
         <button
           type="button"
@@ -324,33 +324,33 @@ export default function VirtualRoomPage() {
           type="button"
           onClick={handleRejoin}
           disabled={isConnecting}
-          className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
           title="Tham gia lại nếu rớt mạng"
         >
           <RotateCw size={16} className={isConnecting ? "animate-spin" : ""} />
-          <span>{isConnecting ? "Đang kết nối lại..." : "Tham gia lại"}</span>
+          <span className="hidden sm:inline">{isConnecting ? "Đang kết nối lại..." : "Tham gia lại"}</span>
         </button>
 
         {/* Temporary Exit Button (allows rejoining via Schedule) */}
         <button
           type="button"
           onClick={() => navigate(isInterviewer ? "/interviewer/schedule" : "/interview/schedule")}
-          className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-700 transition"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-700 transition"
           title="Rời phòng tạm thời - Bạn có thể vào lại bất kỳ lúc nào từ Lịch phỏng vấn"
         >
           <ArrowLeft size={16} />
-          <span>Thoát tạm thời</span>
+          <span className="hidden sm:inline">Thoát tạm thời</span>
         </button>
 
         {/* End / Complete Interview Session */}
         <button
           type="button"
           onClick={handleEndInterview}
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-rose-600 text-xs font-bold text-white hover:bg-rose-500 transition shadow-lg shadow-rose-600/30"
+          className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl bg-rose-600 text-xs font-bold text-white hover:bg-rose-500 transition shadow-lg shadow-rose-600/30"
           title="Kết thúc phỏng vấn hoàn tất"
         >
           <PhoneOff size={16} />
-          <span>Kết thúc phỏng vấn</span>
+          <span className="hidden sm:inline">Kết thúc phỏng vấn</span>
         </button>
       </footer>
 

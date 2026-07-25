@@ -20,12 +20,12 @@ export function useUpdateUserProfile() {
   return useMutation({
     mutationFn: updateUserProfile,
     onSuccess: (data) => {
-      toast.success("Profile updated successfully!");
+      toast.success("Cập nhật thông tin cá nhân thành công!");
       queryClient.invalidateQueries({ queryKey: userKeys.profile });
       queryClient.invalidateQueries({ queryKey: ["auth"] });
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to update profile");
+      toast.error(error?.message || "Cập nhật thông tin thất bại");
     },
   });
 }
@@ -37,12 +37,12 @@ export function useUploadUserAvatar() {
   return useMutation({
     mutationFn: uploadUserAvatar,
     onSuccess: (data) => {
-      toast.success("Avatar uploaded successfully!");
+      toast.success("Cập nhật ảnh đại diện thành công!");
       queryClient.invalidateQueries({ queryKey: userKeys.profile });
       queryClient.invalidateQueries({ queryKey: ["auth"] });
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to upload avatar");
+      toast.error(error?.message || "Cập nhật ảnh đại diện thất bại");
     },
   });
 }

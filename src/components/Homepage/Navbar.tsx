@@ -10,41 +10,44 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-lg border-b border-brand-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-2">
+          <Link
+            to="/"
+            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+          >
             <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-xl">D</span>
             </div>
             <span className="text-2xl font-bold tracking-tight text-brand-900 hidden sm:block">
-              DevPrep<span className="text-brand-500">AI</span>
+              DevPrep
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#about"
+            <Link
+              to="/about"
               className="text-slate-600 hover:text-brand-600 font-medium transition-colors"
             >
-              About
-            </a>
-            <a
-              href="#features"
+              Giới thiệu
+            </Link>
+            <Link
+              to="/features"
               className="text-slate-600 hover:text-brand-600 font-medium transition-colors"
             >
-              Features
-            </a>
-            <a
-              href="#resources"
+              Tính năng
+            </Link>
+            <Link
+              to="/resources"
               className="text-slate-600 hover:text-brand-600 font-medium transition-colors"
             >
-              Resources
-            </a>
-            <a
-              href="#community"
+              Tài liệu
+            </Link>
+            <Link
+              to="/community"
               className="text-slate-600 hover:text-brand-600 font-medium transition-colors"
             >
-              Community
-            </a>
+              Cộng đồng
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -52,13 +55,13 @@ export default function Navbar() {
               to="/login"
               className="text-brand-600 font-semibold hover:text-brand-700"
             >
-              Sign In
+              Đăng nhập
             </Link>
             <Link
               to="/register"
               className="bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-brand-700 transition-all shadow-lg shadow-brand-200"
             >
-              Get Started
+              Đăng ký
             </Link>
           </div>
 
@@ -85,26 +88,47 @@ export default function Navbar() {
           animate={{ opacity: 1, y: 0 }}
           className="md:hidden bg-white border-b border-brand-100 px-4 py-6 flex flex-col gap-4 shadow-xl"
         >
-          <a href="#about" className="text-lg font-medium text-slate-700">
-            About
-          </a>
-          <a href="#features" className="text-lg font-medium text-slate-700">
-            Features
-          </a>
-          <a href="#resources" className="text-lg font-medium text-slate-700">
-            Resources
-          </a>
+          <Link
+            to="/about"
+            className="text-lg font-medium text-slate-700"
+            onClick={() => setIsOpen(false)}
+          >
+            Giới thiệu
+          </Link>
+          <Link
+            to="/features"
+            className="text-lg font-medium text-slate-700"
+            onClick={() => setIsOpen(false)}
+          >
+            Tính năng
+          </Link>
+          <Link
+            to="/resources"
+            className="text-lg font-medium text-slate-700"
+            onClick={() => setIsOpen(false)}
+          >
+            Tài liệu
+          </Link>
+          <Link
+            to="/community"
+            className="text-lg font-medium text-slate-700"
+            onClick={() => setIsOpen(false)}
+          >
+            Cộng đồng
+          </Link>
           <Link
             to="/login"
             className="w-full py-3 text-center text-brand-600 font-bold border border-brand-200 rounded-xl"
+            onClick={() => setIsOpen(false)}
           >
-            Sign In
+            Đăng nhập
           </Link>
           <Link
             to="/register"
             className="w-full py-3 text-center bg-brand-600 text-white font-bold rounded-xl"
+            onClick={() => setIsOpen(false)}
           >
-            Get Started
+            Đăng ký
           </Link>
         </motion.div>
       )}

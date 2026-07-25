@@ -1,10 +1,10 @@
 import { motion } from "motion/react";
 
 const stats = [
-  { label: "Total Users", value: "15,000+" },
-  { label: "InterViews Conducted", value: "48,000+" },
-  { label: "Expert Mentors", value: "500+" },
-  { label: "Success Rate", value: "94%" },
+  { label: "Lập trình viên tham gia", value: "15,000+" },
+  { label: "Buổi phỏng vấn giả lập", value: "48,000+" },
+  { label: "Chuyên gia công nghệ", value: "500+" },
+  { label: "Tỷ lệ đỗ phỏng vấn", value: "94%" },
 ];
 
 export default function Stats() {
