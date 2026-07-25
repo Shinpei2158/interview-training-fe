@@ -25,17 +25,14 @@ export default function Hero() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f0f7ff] border border-[#e0f2fe] text-[#0077b6] font-medium text-sm mb-6">
               <Terminal className="w-4 h-4 text-[#0077b6]" />
-              <span>The Next-Gen Interview Platform for IT Experts</span>
+              <span>Nền tảng phỏng vấn IT thế hệ mới dành cho các lập trình viên</span>
             </div>
             <h1 className="text-5xl lg:text-7xl font-extrabold text-[#0f172a] leading-[1.1] mb-6">
-              Master Your IT{" "}
-              <span className="text-[#0077b6] italic">Interviews</span> with
-              Professionals.
+              Chinh phục Phỏng vấn IT{" "}
+              <span className="text-[#0077b6] italic">cùng Chuyên gia</span> hàng đầu.
             </h1>
             <p className="text-xl text-[#64748b] mb-8 leading-relaxed max-w-xl">
-              Connect with experienced IT interviewers from top tech companies.
-              Practice real-world scenarios, get instant feedback, and land your
-              dream job.
+              Kết nối trực tiếp với những người phỏng vấn giàu kinh nghiệm đến từ các tập đoàn công nghệ lớn. Thực chiến phỏng vấn giả lập, nhận phản hồi lập tức và bứt phá sự nghiệp.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -46,10 +43,13 @@ export default function Hero() {
                 Bắt đầu phỏng vấn
                 <ChevronRight className="w-5 h-5" />
               </Link>
-              <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg text-[#0f172a] hover:bg-[#f0f7ff] hover:text-[#0077b6] transition border border-[#e2e8f0]">
+              <Link
+                to="/features"
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg text-[#0f172a] hover:bg-[#f0f7ff] hover:text-[#0077b6] transition border border-[#e2e8f0]"
+              >
                 <PlayCircle className="w-5 h-5 text-[#0077b6]" />
-                Xem Demo
-              </button>
+                Khám phá tính năng
+              </Link>
             </div>
 
             <div className="mt-10 flex items-center gap-6">
@@ -90,10 +90,10 @@ export default function Hero() {
                 <ShieldCheck className="w-8 h-8 text-green-500" />
                 <div>
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-                    Verification
+                    Kiểm duyệt
                   </p>
                   <p className="text-sm font-bold text-slate-900">
-                    Certified Interviewers
+                    Chuyên gia đã xác thực
                   </p>
                 </div>
               </div>
@@ -101,10 +101,10 @@ export default function Hero() {
               <div className="absolute bottom-12 left-8 bg-brand-600 text-white p-6 rounded-2xl shadow-2xl shadow-brand-500/50 max-w-[200px]">
                 <Code2 className="w-10 h-10 mb-2" />
                 <p className="text-lg font-bold leading-tight">
-                  Mock Coding Sessions
+                  Phỏng vấn thực tế
                 </p>
                 <p className="text-xs opacity-80 mt-1">
-                  Real-time collaboration & feedback
+                  Tương tác trực tiếp & nhận đánh giá chi tiết
                 </p>
               </div>
 

@@ -171,12 +171,12 @@ export default function InterviewerQuizEditorPage() {
       setSelectedSubIds((prev) => prev.filter((id) => id !== sub.id));
     } else {
       if (selectedSubIds.length >= 3) {
-        toast.error("You can select at most 3 subcategories");
+        toast.error("Bạn chỉ được chọn tối đa 3 danh mục con");
         return;
       }
       if (lockedCategoryId && sub.categoryId !== lockedCategoryId) {
         toast.error(
-          "All selected subcategories must belong to the same category",
+          "Tất cả các danh mục con được chọn phải thuộc về cùng một danh mục cha",
         );
         return;
       }
@@ -268,7 +268,7 @@ export default function InterviewerQuizEditorPage() {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error("Please upload an image file");
+      toast.error("Vui lòng tải lên một tệp hình ảnh");
       return;
     }
 

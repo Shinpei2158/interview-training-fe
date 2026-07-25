@@ -58,7 +58,7 @@ export default function RegisterPage() {
         <div className="auth-brand">
           <div className="auth-brand__mark">DP</div>
           <div>
-            <p className="auth-brand__title">DevPrep AI</p>
+            <p className="auth-brand__title">DevPrep</p>
             <p className="auth-brand__subtitle">Bắt đầu hành trình của bạn</p>
           </div>
         </div>

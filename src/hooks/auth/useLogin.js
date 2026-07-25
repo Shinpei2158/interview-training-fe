@@ -14,11 +14,12 @@ export function useLogin() {
     mutationFn: ({ email, password }) => login(email, password),
 
     onSuccess: async (data) => {
+      queryClient.clear();
       const authData = await queryClient.fetchQuery({
         queryKey: ["auth"],
         queryFn: me,
       });
-      toast.success(data.message || "Login successful");
+      toast.success(data.message || "Đăng nhập thành công");
 
       navigate(authData.role === "ADMIN" ? "/admin/dashboard" : "/dashboard", {
         replace: true,

@@ -1,5 +1,6 @@
 import { DollarSign, Globe, Award, TrendingUp } from "lucide-react";
 import { FaUserTie } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function InterviewerSignup() {
   return (
@@ -8,16 +9,14 @@ export default function InterviewerSignup() {
         <div className="bg-white rounded-[3rem] overflow-hidden shadow-2xl border border-brand-100 flex flex-col lg:flex-row">
           <div className="lg:w-1/2 p-12 lg:p-20">
             <h2 className="text-sm font-bold text-brand-600 uppercase tracking-widest mb-4">
-              Become an Interviewer
+              Trở thành Người phỏng vấn
             </h2>
             <h3 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-              Share Your Expertise &{" "}
-              <span className="text-brand-600">Earn Money</span>
+              Chia sẻ kinh nghiệm &{" "}
+              <span className="text-brand-600">Kiếm thêm thu nhập</span>
             </h3>
             <p className="text-slate-600 text-lg mb-10 leading-relaxed">
-              Are you a senior developer or technical lead? Join our platform to
-              mentor aspiring candidates. Set your own schedule, share valuable
-              insights, and monetize your experience.
+              Bạn là lập trình viên cấp cao, Tech Lead hoặc Solution Architect? Hãy gia nhập đội ngũ chuyên gia của chúng tôi để hướng dẫn thế hệ tiếp theo. Tự chủ động thời gian biểu, chia sẻ kiến thức thực chiến và tạo thêm nguồn thu nhập hấp dẫn.
             </p>
 
             <div className="space-y-6 mb-10">
@@ -26,9 +25,9 @@ export default function InterviewerSignup() {
                   <DollarSign className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900">Competitive Pay</p>
+                  <p className="font-bold text-slate-900">Thu nhập xứng đáng</p>
                   <p className="text-sm text-slate-500">
-                    Earn up to $150 per hour-long mock session.
+                    Nhận thù lao hấp dẫn cho mỗi giờ phỏng vấn giả lập và đánh giá ứng viên.
                   </p>
                 </div>
               </div>
@@ -38,10 +37,10 @@ export default function InterviewerSignup() {
                 </div>
                 <div>
                   <p className="font-bold text-slate-900">
-                    Flexible Scheduling
+                    Lịch trình linh hoạt
                   </p>
                   <p className="text-sm text-slate-500">
-                    Work whenever you want, from anywhere in the world.
+                    Làm việc bất cứ khi nào bạn rảnh, từ bất cứ đâu trên thế giới.
                   </p>
                 </div>
               </div>
@@ -50,17 +49,20 @@ export default function InterviewerSignup() {
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900">Build Your Network</p>
+                  <p className="font-bold text-slate-900">Mở rộng thương hiệu cá nhân</p>
                   <p className="text-sm text-slate-500">
-                    Connect with talent and grow your professional brand.
+                    Kết nối với cộng đồng công nghệ tài năng và khẳng định vị thế chuyên môn của bạn.
                   </p>
                 </div>
               </div>
             </div>
 
-            <button className="bg-brand-900 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-black transition-colors shadow-xl">
-              Apply as Interviewer
-            </button>
+            <Link
+              to="/register"
+              className="bg-brand-900 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-black transition-colors shadow-xl inline-block"
+            >
+              Đăng ký làm Chuyên gia
+            </Link>
           </div>
 
           <div className="lg:w-1/2 relative bg-brand-600 overflow-hidden">
@@ -87,12 +89,10 @@ export default function InterviewerSignup() {
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl mb-8">
                 <Award className="w-12 h-12 mb-4 text-brand-200" />
                 <p className="text-2xl font-bold mb-2">
-                  "Great way to give back"
+                  "Cách tuyệt vời để đóng góp cho cộng đồng"
                 </p>
                 <p className="opacity-80 italic">
-                  "I've interviewed over 50 candidates on DevPrep. It's
-                  incredibly rewarding to help others land their first big tech
-                  role while earning extra income."
+                  "Tôi đã phỏng vấn hơn 50 ứng viên trên DevPrep. Thực sự rất ý nghĩa khi giúp đỡ các bạn trẻ rút ngắn lộ trình chạm tới công việc mơ ước, đồng thời giúp tôi hệ thống hóa kiến thức và có thêm nguồn thu nhập tốt."
                 </p>
                 <div className="mt-6 flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
@@ -100,9 +100,9 @@ export default function InterviewerSignup() {
                   </div>
 
                   <div>
-                    <p className="font-bold">Sarah Jenkins</p>
+                    <p className="font-bold">Trần Thu Trang</p>
                     <p className="text-sm opacity-70">
-                      Senior Engineer @ Google
+                      Tech Lead @ VNG Corporation
                     </p>
                   </div>
                 </div>
@@ -112,13 +112,13 @@ export default function InterviewerSignup() {
                 <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
                   <p className="text-3xl font-bold">500+</p>
                   <p className="text-sm opacity-60 uppercase tracking-widest font-bold">
-                    Active Mentors
+                    Chuyên gia hoạt động
                   </p>
                 </div>
                 <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                  <p className="text-3xl font-bold">$2M+</p>
+                  <p className="text-3xl font-bold">2.5 tỷ+</p>
                   <p className="text-sm opacity-60 uppercase tracking-widest font-bold">
-                    Paid Out
+                    VNĐ Thù lao đã trả
                   </p>
                 </div>
               </div>

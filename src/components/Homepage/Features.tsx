@@ -10,44 +10,44 @@ import {
 
 const features = [
   {
-    title: "HD Video Calls",
+    title: "Phòng phỏng vấn trực tuyến",
     description:
-      "Participate in real-time technical interviews with smooth video and low-latency audio.",
+      "Thực hiện phỏng vấn giả lập với cuộc gọi video chất lượng cao, độ trễ thấp và tích hợp khung chat tiện lợi.",
     icon: Video,
     color: "bg-blue-100 text-blue-600",
   },
   {
-    title: "Smart Chat System",
+    title: "Trình soạn thảo Code tương tác",
     description:
-      "Instant messaging with interviewers for quick questions and post-interview follow-ups.",
+      "Lập trình cộng tác thời gian thực ngay trong phòng phỏng vấn, giúp chuyên gia trực tiếp theo dõi và đánh giá mã nguồn.",
     icon: MessagesSquare,
     color: "bg-indigo-100 text-indigo-600",
   },
   {
-    title: "Community Groups",
+    title: "Kết nối Chuyên gia đầu ngành",
     description:
-      "Join tech-specific groups to share experiences, questions, and networking opportunities.",
+      "Dễ dàng tìm kiếm và kết nối với các Tech Lead, Senior Developer đến từ các công ty công nghệ hàng đầu.",
     icon: Users,
     color: "bg-purple-100 text-purple-600",
   },
   {
-    title: "Interactive Quizzes",
+    title: "Luyện trắc nghiệm thông minh",
     description:
-      "Test your knowledge with our curated set of IT quizzes across 20+ technologies.",
+      "Ngân hàng câu hỏi trắc nghiệm IT đa dạng trên 20+ chủ đề công nghệ, hỗ trợ chế độ Học (Study) và Thi thử (Test).",
     icon: Trophy,
     color: "bg-amber-100 text-amber-600",
   },
   {
-    title: "Learning Resources",
+    title: "Theo dõi & Đánh giá tiến độ",
     description:
-      "Access a vast library of interview guides, cheat sheets, and solved technical problems.",
+      "Ghi nhận chi tiết lộ trình ôn tập, các câu hỏi đã lưu và lịch sử phỏng vấn để đo lường mức độ cải thiện kỹ năng.",
     icon: BookOpen,
     color: "bg-green-100 text-green-600",
   },
   {
-    title: "Mock AI Insights",
+    title: "Cổng thông tin Chuyên gia",
     description:
-      "Get AI-powered feedback on your performance, communication style, and code quality.",
+      "Công cụ quản lý lịch rảnh linh hoạt, phê duyệt yêu cầu phỏng vấn và đóng góp bộ đề thi trắc nghiệm mới cho cộng đồng.",
     icon: Lightbulb,
     color: "bg-pink-100 text-pink-600",
   },
@@ -59,14 +59,13 @@ export default function Features() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-600 uppercase tracking-[0.2em] mb-4">
-            Core Platform
+            TÍNH NĂNG CỐT LÕI
           </h2>
           <p className="text-4xl font-extrabold text-slate-900 mb-6">
-            Everything You Need to Succeed
+            Mọi công cụ bạn cần để bứt phá
           </p>
           <p className="max-w-2xl mx-auto text-slate-600 text-lg">
-            We provide a comprehensive suite of tools designed to simulate real
-            IT interviews and build your confidence step by step.
+            Chúng tôi cung cấp một hệ sinh thái toàn diện được thiết kế để giả lập chính xác các buổi phỏng vấn IT thực tế và giúp bạn nâng cao sự tự tin từng bước.
           </p>
         </div>
 

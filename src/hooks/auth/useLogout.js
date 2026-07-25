@@ -12,10 +12,8 @@ export function useLogout() {
   return useMutation({
     mutationFn: logout,
     onSuccess: async (data) => {
-      await queryClient.cancelQueries({ queryKey: ["auth"] });
-      queryClient.setQueryData(["auth"], null);
-      queryClient.removeQueries({ queryKey: ["categories"] });
-      toast.success(data.message || "Signed out");
+      queryClient.clear();
+      toast.success(data.message || "Đăng xuất thành công");
       navigate("/login", { replace: true });
     },
     onError: (error) => {

@@ -12,12 +12,13 @@ export function useGoogleLogin() {
   return useMutation({
     mutationFn: (idToken) => loginWithGoogle(idToken),
     onSuccess: async (data) => {
+      queryClient.clear();
       const authData = await queryClient.fetchQuery({
         queryKey: ["auth"],
         queryFn: me,
       });
 
-      toast.success(data.message || "Google login successful");
+      toast.success(data.message || "Đăng nhập bằng Google thành công");
       navigate(authData.role === "ADMIN" ? "/admin/dashboard" : "/dashboard", {
         replace: true,
       });

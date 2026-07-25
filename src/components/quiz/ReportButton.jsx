@@ -22,11 +22,11 @@ export default function ReportButton({ reportType, targetId }) {
         targetId,
         reason: [reason, details.trim()].filter(Boolean).join(": "),
       });
-      toast.success("Report submitted");
+      toast.success("Đã gửi báo cáo thành công!");
       setOpen(false);
       setDetails("");
     } catch (error) {
-      toast.error(error.message || "Unable to submit report");
+      toast.error(error.message || "Không thể gửi báo cáo");
     } finally {
       setIsSubmitting(false);
     }

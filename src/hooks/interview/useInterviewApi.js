@@ -53,7 +53,7 @@ export function useSaveMyInterviewProfile() {
   return useMutation({
     mutationFn: saveMyInterviewProfile,
     onSuccess: () => {
-      toast.success("Interview profile saved");
+      toast.success("Hồ sơ phỏng vấn đã được lưu");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
       queryClient.invalidateQueries({ queryKey: ["interview-profiles"] });
     },
@@ -68,7 +68,7 @@ export function useUploadInterviewerDocuments() {
   return useMutation({
     mutationFn: uploadInterviewerDocuments,
     onSuccess: () => {
-      toast.success("Verification documents uploaded successfully!");
+      toast.success("Tải lên tài liệu xác minh thành công!");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
     },
     onError: (error) => toast.error(error.message),
@@ -82,7 +82,7 @@ export function useUploadVerificationImage() {
   return useMutation({
     mutationFn: uploadVerificationImage,
     onSuccess: () => {
-      toast.success("Verification image uploaded!");
+      toast.success("Tải lên ảnh xác minh thành công!");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
     },
     onError: (error) => toast.error(error.message),
@@ -96,7 +96,7 @@ export function useDeleteVerificationImage() {
   return useMutation({
     mutationFn: deleteVerificationImage,
     onSuccess: () => {
-      toast.success("Verification image removed.");
+      toast.success("Đã xóa ảnh xác minh.");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
     },
     onError: (error) => toast.error(error.message),
@@ -110,7 +110,7 @@ export function useDeleteVerificationDocument() {
   return useMutation({
     mutationFn: deleteVerificationDocument,
     onSuccess: () => {
-      toast.success("Document removed.");
+      toast.success("Đã xóa tài liệu.");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myProfile });
     },
     onError: (error) => toast.error(error.message),
@@ -132,7 +132,7 @@ export function useCreateInterviewRequest({ onSuccess } = {}) {
   return useMutation({
     mutationFn: ({ profileId, payload }) => createInterviewRequest(profileId, payload),
     onSuccess: () => {
-      toast.success("Interview request sent");
+      toast.success("Yêu cầu phỏng vấn đã được gửi");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myBookings });
       onSuccess?.();
     },
@@ -162,15 +162,15 @@ function useBookingAction(actionFn, successMessage) {
 }
 
 export function useAcceptInterviewBooking() {
-  return useBookingAction(acceptInterviewBooking, "Request accepted");
+  return useBookingAction(acceptInterviewBooking, "Yêu cầu đã được chấp nhận");
 }
 
 export function useRejectInterviewBooking() {
-  return useBookingAction(rejectInterviewBooking, "Request rejected");
+  return useBookingAction(rejectInterviewBooking, "Yêu cầu đã bị từ chối");
 }
 
 export function useCompleteInterviewBooking() {
-  return useBookingAction(completeInterviewBooking, "Interview completed");
+  return useBookingAction(completeInterviewBooking, "Cuộc phỏng vấn đã hoàn thành");
 }
 
 export function useSubmitInterviewFeedback() {
@@ -180,7 +180,7 @@ export function useSubmitInterviewFeedback() {
   return useMutation({
     mutationFn: ({ bookingId, payload }) => submitInterviewFeedback(bookingId, payload),
     onSuccess: (_, { bookingId }) => {
-      toast.success("Feedback submitted");
+      toast.success("Đã nộp phản hồi");
       queryClient.invalidateQueries({ queryKey: interviewKeys.myBookings });
       queryClient.invalidateQueries({ queryKey: interviewKeys.bookingFeedback(bookingId) });
     },
@@ -211,8 +211,8 @@ export function useSubmitReport() {
   return useMutation({
     mutationFn: createReport,
     onSuccess: () => {
-      toast.success("Report submitted successfully");
+      toast.success("Gửi báo cáo thành công");
     },
-    onError: (error) => toast.error(error.message || "Failed to submit report"),
+    onError: (error) => toast.error(error.message || "Gửi báo cáo thất bại"),
   });
 }

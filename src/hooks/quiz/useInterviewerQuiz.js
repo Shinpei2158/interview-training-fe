@@ -66,10 +66,10 @@ export function useCreateQuiz() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-quizzes"] });
-      toast.success("Quiz created successfully");
+      toast.success("Tạo bộ câu hỏi thành công");
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to create quiz");
+      toast.error(error?.message || "Tạo bộ câu hỏi thất bại");
     },
   });
 }
@@ -107,7 +107,7 @@ export function useSaveDraftQuiz() {
       queryClient.invalidateQueries({ queryKey: ["quiz-questions", data.id] });
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to save draft quiz");
+      toast.error(error?.message || "Lưu nháp bộ câu hỏi thất bại");
     },
   });
 }
@@ -123,10 +123,10 @@ export function useSubmitQuiz() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["my-quizzes"] });
       queryClient.invalidateQueries({ queryKey: ["quiz-questions", data.id] });
-      toast.success("Quiz submitted for review");
+      toast.success("Đã gửi yêu cầu phê duyệt bộ câu hỏi");
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to submit quiz");
+      toast.error(error?.message || "Gửi yêu cầu phê duyệt bộ câu hỏi thất bại");
     },
   });
 }
@@ -143,7 +143,7 @@ export function useSaveQuestions(quizId) {
       queryClient.invalidateQueries({ queryKey: ["quiz-questions", quizId] });
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to save questions");
+      toast.error(error?.message || "Lưu câu hỏi thất bại");
     },
   });
 }
@@ -156,7 +156,7 @@ export function useUploadQuestionImage() {
       return response.data || response;
     },
     onError: (error) => {
-      toast.error(error?.message || "Failed to upload image");
+      toast.error(error?.message || "Tải lên hình ảnh thất bại");
     },
   });
 }
