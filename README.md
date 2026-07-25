@@ -1,4 +1,4 @@
-# 🎯 Interview Training Platform - Frontend (React + Vite)
+# Interview Training Platform - Frontend (React + Vite)
 
 This is the frontend client for the **Interview Training Platform**, built with **React (v19)**, **Vite**, and **Tailwind CSS v4**. It offers a responsive, interactive user interface for practice quizzes, interviewer search, scheduling, and live mock interview calls.
 
