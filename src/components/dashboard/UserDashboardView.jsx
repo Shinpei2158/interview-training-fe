@@ -432,15 +432,14 @@ export default function UserDashboardView({ user }) {
                 >
                   <div>
                     <h4 className="text-xs font-bold text-[#0f172a]">
-                      {p.quizTitle || "Bài kiểm tra ngẫu nhiên"}
+                      {p.quizTitle}
                     </h4>
                     <p className="text-[11px] text-[#64748b] mt-0.5">
-                      {p.completedQuestions || 5}/{p.totalQuestions || 5} câu
-                      đúng
+                      {p.completedQuestions}/{p.totalQuestions} câu đúng
                     </p>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-xs font-extrabold bg-[#e6f4ea] text-[#137333] border border-[#c3e6cb]">
-                    {p.scorePercentage || 100}%
+                    {p.scorePercentage}%
                   </span>
                 </div>
               ))}
