@@ -140,12 +140,13 @@ export function useCreateInterviewRequest({ onSuccess } = {}) {
   });
 }
 
-export function useMyInterviewBookings() {
+export function useMyInterviewBookings(params) {
   return useQuery({
-    queryKey: interviewKeys.myBookings,
-    queryFn: () => fetchMyInterviewBookings(),
+    queryKey: params ? [...interviewKeys.myBookings, params] : interviewKeys.myBookings,
+    queryFn: () => fetchMyInterviewBookings(params),
   });
 }
+
 
 function useBookingAction(actionFn, successMessage) {
   const queryClient = useQueryClient();
