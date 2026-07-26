@@ -9,7 +9,7 @@ export default function MyInterviewSchedulePage() {
     <div className="space-y-6">
       <InterviewHeader
         title="Lịch Phỏng Vấn Của Tôi"
-        description="Các buổi phỏng vấn đã được chấp nhận sẽ hiển thị tại đây. Khi đến giờ hẹn, bạn có thể tham gia phòng phỏng vấn trực tuyến."
+        description="Quản lý toàn bộ lịch phỏng vấn và yêu cầu của bạn: Đang chờ duyệt, Đã chấp nhận, Đã hoàn thành hoặc Từ chối."
       />
       <BookingList user={user} mode="schedule" />
     </div>
