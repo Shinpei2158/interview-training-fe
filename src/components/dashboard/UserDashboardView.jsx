@@ -79,7 +79,7 @@ export default function UserDashboardView({ user }) {
     ];
 
     finishedTests.forEach((item) => {
-      const date = item.updatedAt ? new Date(item.updatedAt) : new Date();
+      const date = item.createdAt ? new Date(item.createdAt) : new Date();
       const dayName = dayNames[date.getDay()];
       const pct = Math.round(
         ((item.score || 0) / Math.max(item.totalQuestions || 1, 1)) * 100,
@@ -425,24 +425,43 @@ export default function UserDashboardView({ user }) {
             </p>
           ) : (
             <div className="space-y-3">
-              {progressList.slice(0, 4).map((p) => (
-                <div
-                  key={p.id}
-                  className="p-3.5 rounded-xl border border-[#e2e8f0] bg-white flex items-center justify-between gap-3 hover:bg-[#f0f7ff]/40 transition"
-                >
-                  <div>
-                    <h4 className="text-xs font-bold text-[#0f172a]">
-                      {p.quizTitle}
-                    </h4>
-                    <p className="text-[11px] text-[#64748b] mt-0.5">
-                      {p.completedQuestions}/{p.totalQuestions} câu đúng
-                    </p>
+              {progressList.slice(0, 4).map((p) => {
+                const isFinished = p.status === "FINISHED";
+                const percentage = p.totalQuestions
+                  ? Math.round(((isFinished ? (p.score || 0) : (p.answeredQuestions || 0)) / p.totalQuestions) * 100)
+                  : 0;
+
+                return (
+                  <div
+                    key={p.id}
+                    className="p-3.5 rounded-xl border border-[#e2e8f0] bg-white flex items-center justify-between gap-3 hover:bg-[#f0f7ff]/40 transition"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold text-[#0f172a] truncate">
+                        {p.quizTitle}
+                      </h4>
+                      <p className="text-[11px] text-[#64748b] mt-0.5">
+                        {isFinished ? (
+                          <span>{p.score || 0}/{p.totalQuestions} câu đúng</span>
+                        ) : (
+                          <span className="text-amber-600 font-semibold">
+                            Đang làm dở • {p.answeredQuestions || 0}/{p.totalQuestions} câu
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-xs font-extrabold shrink-0 ${
+                        isFinished
+                          ? "bg-[#e6f4ea] text-[#137333] border border-[#c3e6cb]"
+                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                      }`}
+                    >
+                      {percentage}%
+                    </span>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-xs font-extrabold bg-[#e6f4ea] text-[#137333] border border-[#c3e6cb]">
-                    {p.scorePercentage}%
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
